@@ -1,10 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link type="text/css" href="{% static 'train_main_app/css/styles.css' %}" rel="stylesheet" />
+
 </head>
 <body>
-$END$
+
+<form method="post" action="{{ form_action_url }}">
+    {% csrf_token %}
+
+    <div class="form-error">{{ form.non_field_errors }}</div>
+
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+
+    <button type="submit">Найти маршрут</button>
+</form>
+
 </body>
 </html>

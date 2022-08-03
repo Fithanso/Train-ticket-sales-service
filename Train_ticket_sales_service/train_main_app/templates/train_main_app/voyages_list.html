@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Подходящие маршруты</title>
+</head>
+<body>
+<h1>{{message}}</h1>
+
+{% for v in voyages %}
+
+<h2>{{ v.voyage }}</h2>
+<h3>Departure: {{ v.departure_station.name }} at {{ v.voyage.departure_datetime }} ---- Arrival: {{ v.arrival_station.name }} at {{ v.arrival_datetime }}</h3>
+<h3>Stations en route:</h3>
+
+<div style="display: inline">
+{% for station in v.stations_en_route %}
+    {% if station.station == v.departure_station or station.station == v.arrival_station %}
+        <span style="color: red"> {{ station.station.name }} </span><span>{% if not forloop.last %} ---- {% endif %} </span>
+    {% else %}
+        <span> {{ station.station.name }} {% if not forloop.last %} ---- {% endif %} </span>
+    {% endif %}
+{% endfor %}
+</div>
+
+<h3>Prices:</h3>
+<h4>Normal seat: {{ v.normal_seat_price }}</h4>
+<h4>Business class seat: {{ v.bc_seat_price }}</h4>
+
+<hr>
+{% endfor %}
+
+</body>
+</html>
