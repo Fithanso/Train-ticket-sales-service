@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -8,10 +9,15 @@ class Voyage(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True, verbose_name='Название')
     train = models.ForeignKey('Train', on_delete=models.PROTECT, verbose_name="Поезд")
     departure_datetime = models.DateTimeField(verbose_name="Время отправления")
-    departure_station = models.ForeignKey('City', on_delete=models.PROTECT, related_name='departure_station',
-                                          verbose_name='Город отправления')
-    arrival_station = models.ForeignKey('City', on_delete=models.PROTECT, related_name='arrival_station',
-                                        verbose_name='Город прибытия')
+    departure_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='departure_station',
+                                          verbose_name='Станция отправления')
+    arrival_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='arrival_station',
+                                        verbose_name='Станция прибытия')
+
+    departure_city = models.ForeignKey('City', on_delete=models.PROTECT, related_name='departure_city',
+                                       verbose_name='Город отправления')
+    arrival_city = models.ForeignKey('City', on_delete=models.PROTECT, related_name='arrival_city',
+                                     verbose_name='Город прибытия')
     price_per_station = models.IntegerField(blank=True, default=0,
                                             verbose_name="Цена за один переезд (станцию)")
 
@@ -22,6 +28,9 @@ class Voyage(models.Model):
 
     def __str__(self):
         return self.departure_station.name + ' - ' + self.arrival_station.name
+
+    def get_absolute_url(self):
+        return reverse('view_voyage', kwargs={'voyage_id': self.pk})
 
     class Meta:
         db_table = 'voyages'
@@ -123,9 +132,9 @@ class PurchasedTicket(models.Model):
     customers_phone_number = models.CharField(max_length=50, verbose_name='Телефон клиента')
     purchase_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время покупки')
     voyage = models.ForeignKey('Voyage', on_delete=models.PROTECT, verbose_name='Маршрут')
-    departure_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='departure_station',
+    departure_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='departure_st',
                                           verbose_name='Станция отправления')
-    arrival_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='arrival_station',
+    arrival_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='arrival_st',
                                         verbose_name='Станция прибытия')
     seat_number = models.CharField(max_length=50, verbose_name='Место')
 

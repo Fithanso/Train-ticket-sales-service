@@ -6,7 +6,7 @@ from django.http import HttpResponse, request, HttpResponseNotFound, Http404
 from django.template import RequestContext
 from django.urls import reverse, reverse_lazy
 from urllib.parse import urlencode
-from django.views.generic import FormView, ListView
+from django.views.generic import FormView, ListView, DetailView
 
 from .business_logic.classes import *
 from .forms import *
@@ -42,14 +42,25 @@ class VoyagesList(ListView):
         return context
 
     def get_queryset(self):
-        data = self.request.GET
+        get_params = self.request.GET
 
-        if not all(key in self.request.GET for key in INDEX_FILTER_GET_PARAMETERS):
-            raise Http404()
+        validate_index_filter_get_parameters(get_params)
 
-        time_part = (DB_DATE_TIME_SEPARATOR + ("00" + DB_TIME_SEPARATOR) * DB_NUMBER_OF_TIME_PARTS)[:-1]
-        date_with_time = data['departure_date'] + time_part
-        voyages_with_suitable_time = Voyage.objects.filter(departure_datetime__gte=date_with_time)
-        return VoyageFinder.find_suitable_voyages(voyages_with_suitable_time, data)
+        finder = VoyageFinder(get_params)
+        return finder.find_suitable_voyages()
 
+
+class ViewVoyage(DetailView):
+    model = Voyage
+    pk_url_kwarg = 'voyage_id'
+    template_name = 'train_main_app/view_voyage.html'
+    context_object_name = 'voyage'
+
+    def get_context_data(self, **kwargs):
+        context = super(ViewVoyage, self).get_context_data(**kwargs)
+
+        voyage = VoyageInfoGetter.get_detailed_voyage(context['voyage'])
+        context['voyage'] = voyage
+
+        return context
 

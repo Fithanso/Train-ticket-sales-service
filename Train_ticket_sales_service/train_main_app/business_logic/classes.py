@@ -1,46 +1,87 @@
+import inspect
+
+from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 
+from ..functions import get_zero_time
 from ..models import *
 
 
 class VoyageDisplayObject:
-    def __init__(self, **kwargs):
-        self.voyage = kwargs['voyage']
-        self.stations_en_route = kwargs['stations_en_route']
-        self.departure_station = kwargs['departure_station']
-        self.arrival_station = kwargs['arrival_station']
-        self.arrival_datetime = kwargs['arrival_datetime']
 
-        for seat_price in kwargs['seat_prices']:
-            setattr(self, seat_price, kwargs['seat_prices'][seat_price])
+    def __init__(self, **kwargs):
+        for arg in kwargs:
+            setattr(self, arg, kwargs[arg])
+
+    def __str__(self):
+        if hasattr(self, 'departure_station') and hasattr(self, 'arrival_station'):
+            return self.departure_station.name + ' - ' + self.arrival_station.name
+        return ''
+
+
+class VoyageInfoGetter:
+
+    @staticmethod
+    def get_detailed_voyage(voyage_entity):
+
+        stations_en_route, departure_en_route, arrival_en_route = VoyageInfoGetter.get_stations_en_route(voyage_entity)
+
+        stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
+        seat_prices = VoyageInfoGetter.get_seats_prices(voyage_entity, stations_to_go)
+
+        detailed_voyage = VoyageDisplayObject(voyage_entity=voyage_entity, stations_en_route=stations_en_route,
+                                              departure_en_route=departure_en_route, arrival_en_route=arrival_en_route,
+                                              stations_to_go=stations_to_go, seat_prices=seat_prices)
+
+        return detailed_voyage
+
+    @staticmethod
+    def get_stations_en_route(voyage: Voyage) -> tuple:
+        stations_en_route = StationInVoyage.objects.filter(voyage=voyage).order_by('station_order')
+        departure_en_route = stations_en_route.filter(station=voyage.departure_station)
+        arrival_en_route = stations_en_route.filter(station=voyage.arrival_station)
+
+        return (stations_en_route, departure_en_route[0] if departure_en_route.exists() else None,
+                arrival_en_route[0] if arrival_en_route.exists() else None)
+
+    @staticmethod
+    def get_seats_prices(voyage: Voyage, stations_to_go=1) -> dict:
+        normal_seat_price = int(voyage.price_per_station) * stations_to_go
+        bc_seat_price = voyage.bc_price_per_station * stations_to_go
+        return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
 
 
 class VoyageFinder:
-    @staticmethod
-    def find_suitable_voyages(voyage_entities: [Voyage], data: dict) -> list:
+
+    def __init__(self, data: dict):
+
+        self.departure_date = data['departure_date']
+        self.departure_param = data['departure_station']
+        self.arrival_param = data['arrival_station']
+        self.departure_station = ''
+        self.arrival_station = ''
+        self.stations_to_go = 0
+
+    def find_suitable_voyages(self) -> list:
         suitable_voyages = []
-        departure_station = get_object_or_404(Station, name=data['departure_station'])
-        arrival_station = get_object_or_404(Station, name=data['arrival_station'])
+        voyages_with_suitable_time = self.filter_voyages_by_time()
 
-        for voyage in voyage_entities:
+        self.departure_station = get_object_or_404(Station, name=self.departure_param)
+        self.arrival_station = get_object_or_404(Station, name=self.arrival_param)
 
-            stations_en_route = StationInVoyage.objects.filter(voyage=voyage).order_by('station_order')
-            departure_en_route = stations_en_route.filter(station=departure_station)
-            arrival_en_route = stations_en_route.filter(station=arrival_station)
+        for voyage in voyages_with_suitable_time:
 
-            if departure_en_route.exists() and arrival_en_route.exists():
-                departure_en_route = departure_en_route[0]
-                arrival_en_route = arrival_en_route[0]
+            stations_en_route, departure_en_route, arrival_en_route = VoyageInfoGetter.get_stations_en_route(voyage)
+
+            if departure_en_route and arrival_en_route:
 
                 if departure_en_route.station_order < arrival_en_route.station_order:
-
-                    stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
-                    seat_prices = VoyageFinder.get_seats_prices(voyage, stations_to_go)
-
+                    self.stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
+                    seat_prices = VoyageInfoGetter.get_seats_prices(voyage, self.stations_to_go)
                     suitable_voyage = VoyageDisplayObject(voyage=voyage,
                                                           stations_en_route=stations_en_route,
-                                                          departure_station=departure_station,
-                                                          arrival_station=arrival_station,
+                                                          departure_station=self.departure_station,
+                                                          arrival_station=self.arrival_station,
                                                           arrival_datetime=arrival_en_route.arrival_datetime,
                                                           seat_prices=seat_prices)
 
@@ -48,10 +89,7 @@ class VoyageFinder:
 
         return suitable_voyages
 
-    @staticmethod
-    def get_seats_prices(voyage, stations_to_go) -> dict:
-        normal_seat_price = int(voyage.price_per_station) * stations_to_go
-        bc_seat_price = voyage.bc_price_per_station * stations_to_go
-        return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
-
-
+    def filter_voyages_by_time(self) -> QuerySet:
+        time_part = get_zero_time()
+        date_with_time = self.departure_date + time_part
+        return Voyage.objects.filter(departure_datetime__gte=date_with_time)

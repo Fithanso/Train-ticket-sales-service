@@ -43,16 +43,16 @@ class StationInVoyageInline(admin.TabularInline):
 
 class VoyageAdmin(admin.ModelAdmin):
     # что мы видим на странице редактора
-    fields = ('title', 'train', 'departure_station', 'departure_datetime', 'arrival_station',
-              'price_per_station', 'bc_price_per_station', 'taken_seats')
+    fields = ('title', 'train', 'departure_city', 'departure_station', 'departure_datetime', 'arrival_city',
+              'arrival_station', 'price_per_station', 'bc_price_per_station', 'taken_seats')
     # что видим на странице показа всего
-    list_display = ('id', 'departure_station', 'departure_datetime', 'arrival_station', 'title')
+    list_display = ('id', 'departure_city', 'arrival_city', 'departure_station', 'departure_datetime', 'arrival_station')
 
-    list_display_links = ('id', 'departure_station')
+    list_display_links = ('id', 'departure_city')
     # по каким полям можно искать
-    search_fields = ('departure_station', 'arrival_station')
+    search_fields = ('departure_city', 'arrival_city', 'departure_station', 'arrival_station')
     # по каким полям делаем фильтры справа
-    list_filter = ('departure_station', 'departure_datetime', 'arrival_station')
+    list_filter = ('departure_city', 'arrival_city', 'departure_station', 'departure_datetime', 'arrival_station')
     save_on_top = True
 
     inlines = [StationInVoyageInline]

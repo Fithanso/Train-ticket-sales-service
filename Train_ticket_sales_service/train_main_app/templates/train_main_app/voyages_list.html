@@ -24,8 +24,10 @@
 </div>
 
 <h3>Prices:</h3>
-<h4>Normal seat: {{ v.normal_seat_price }}</h4>
-<h4>Business class seat: {{ v.bc_seat_price }}</h4>
+<h4>Normal seat: {{ v.seat_prices.normal_seat_price }}</h4>
+<h4>Business class seat: {{ v.seat_prices.bc_seat_price }}</h4>
+
+<a href="{{ v.voyage.get_absolute_url }}"><button>Buy ticket</button></a>
 
 <hr>
 {% endfor %}
