@@ -1,7 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link type="text/css" href="{% static 'train_main_app/css/styles.css' %}" rel="stylesheet" />
+
     <title>{{ voyage.voyage_entity }} - {{ voyage.voyage_entity.departure_datetime }}</title>
 </head>
 <body>
@@ -9,6 +12,21 @@
 <h1>{{ voyage.voyage_entity }}</h1>
 
 Stations: {{ voyage.stations_to_go }}
+
+<form method="post" action="{% url 'purchase_tickets' %}">
+    {% csrf_token %}
+
+    {% for f in form %}
+        <p>
+            {% if not f.is_hidden %} <label for="{{ f.id_for_label }}"> {{ f.label }}: </label> {% endif %}
+            {{ f }}
+        </p>
+        <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+
+    <button type="submit">Купить</button>
+
+</form>
 
 </body>
 </html>

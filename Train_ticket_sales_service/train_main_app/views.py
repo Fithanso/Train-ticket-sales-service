@@ -6,7 +6,7 @@ from django.http import HttpResponse, request, HttpResponseNotFound, Http404
 from django.template import RequestContext
 from django.urls import reverse, reverse_lazy
 from urllib.parse import urlencode
-from django.views.generic import FormView, ListView, DetailView
+from django.views.generic import FormView, ListView, DetailView, View
 
 from .business_logic.classes import *
 from .forms import *
@@ -14,11 +14,33 @@ from .constants import *
 from .functions import *
 from .business_logic.index_filter import *
 from .models import *
+from django.forms import *
 
 
-class IndexFilter(FormView):
-    template_name = 'train_main_app/index.html'
+class IndexFilter(FormView, View):
+    template_name = 'train_main_app/voyage_filter.html'
     form_class = VoyagesFilterForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+
+        stations = self.get_stations_by_country()
+        initial['departure_station'] = stations
+        initial['arrival_station'] = stations
+
+        return initial
+
+    def get_stations_by_country(self):
+        country_name = self.kwargs['country_name'].lower()
+        country = get_object_or_404(Country, slug=country_name)
+
+        return Station.objects.filter(city__country=country)
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexFilter, self).get_context_data(**kwargs)
+        context['form'].fields['country'].initial = self.kwargs['country_name'].lower()
+
+        return context
 
     def form_valid(self, form):
         get_params = sluggify_index_filter(form.cleaned_data)
@@ -59,8 +81,19 @@ class ViewVoyage(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ViewVoyage, self).get_context_data(**kwargs)
 
+        form = PurchaseTicketForm
+        form.base_fields['voyage_pk'].initial = context['voyage'].pk
+        context['form'] = form
+
         voyage = VoyageInfoGetter.get_detailed_voyage(context['voyage'])
         context['voyage'] = voyage
 
         return context
+
+
+def purchase_tickets(request):
+    print(request.POST)
+    return HttpResponse('hello')
+
+
 

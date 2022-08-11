@@ -36,10 +36,10 @@ class VoyageInfoGetter:
         return detailed_voyage
 
     @staticmethod
-    def get_stations_en_route(voyage: Voyage) -> tuple:
+    def get_stations_en_route(voyage: Voyage, departure_st_name: str, arrival_st_name: str) -> tuple:
         stations_en_route = StationInVoyage.objects.filter(voyage=voyage).order_by('station_order')
-        departure_en_route = stations_en_route.filter(station=voyage.departure_station)
-        arrival_en_route = stations_en_route.filter(station=voyage.arrival_station)
+        departure_en_route = stations_en_route.filter(station__name=departure_st_name)
+        arrival_en_route = stations_en_route.filter(station__name=arrival_st_name)
 
         return (stations_en_route, departure_en_route[0] if departure_en_route.exists() else None,
                 arrival_en_route[0] if arrival_en_route.exists() else None)
@@ -58,20 +58,16 @@ class VoyageFinder:
         self.departure_date = data['departure_date']
         self.departure_param = data['departure_station']
         self.arrival_param = data['arrival_station']
-        self.departure_station = ''
-        self.arrival_station = ''
         self.stations_to_go = 0
 
     def find_suitable_voyages(self) -> list:
         suitable_voyages = []
         voyages_with_suitable_time = self.filter_voyages_by_time()
 
-        self.departure_station = get_object_or_404(Station, name=self.departure_param)
-        self.arrival_station = get_object_or_404(Station, name=self.arrival_param)
-
         for voyage in voyages_with_suitable_time:
 
-            stations_en_route, departure_en_route, arrival_en_route = VoyageInfoGetter.get_stations_en_route(voyage)
+            stations_en_route, departure_en_route, arrival_en_route = \
+                VoyageInfoGetter.get_stations_en_route(voyage, self.departure_param, self.arrival_param)
 
             if departure_en_route and arrival_en_route:
 
@@ -79,9 +75,11 @@ class VoyageFinder:
                     self.stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
                     seat_prices = VoyageInfoGetter.get_seats_prices(voyage, self.stations_to_go)
                     suitable_voyage = VoyageDisplayObject(voyage=voyage,
+                                                          departure_station=departure_en_route.station,
+                                                          arrival_station=arrival_en_route.station,
                                                           stations_en_route=stations_en_route,
-                                                          departure_station=self.departure_station,
-                                                          arrival_station=self.arrival_station,
+                                                          departure_en_route=departure_en_route,
+                                                          arrival_en_route=arrival_en_route,
                                                           arrival_datetime=arrival_en_route.arrival_datetime,
                                                           seat_prices=seat_prices)
 
