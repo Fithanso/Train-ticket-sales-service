@@ -84,6 +84,10 @@ class ViewVoyage(DetailView):
         form = PurchaseTicketForm
         form.base_fields['voyage_pk'].initial = context['voyage'].pk
         context['form'] = form
+        context['train'] = context['voyage'].train
+
+        tr_getter = TrainInfoGetter(context['voyage'].train)
+        context['seat_names'] = tr_getter.get_seat_names()
 
         voyage = VoyageInfoGetter.get_detailed_voyage(context['voyage'])
         context['voyage'] = voyage
@@ -92,8 +96,8 @@ class ViewVoyage(DetailView):
 
 
 def purchase_tickets(request):
-    print(request.POST)
-    return HttpResponse('hello')
+    print(type(request.POST))
 
+    return HttpResponse('hello')
 
 

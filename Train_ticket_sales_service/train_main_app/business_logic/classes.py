@@ -1,10 +1,12 @@
 import inspect
+from typing import Any, Generator, Iterable
 
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 
 from ..functions import get_zero_time
 from ..models import *
+from .factories import *
 
 
 class VoyageDisplayObject:
@@ -23,8 +25,9 @@ class VoyageInfoGetter:
 
     @staticmethod
     def get_detailed_voyage(voyage_entity):
-
-        stations_en_route, departure_en_route, arrival_en_route = VoyageInfoGetter.get_stations_en_route(voyage_entity)
+        stations_en_route, departure_en_route, arrival_en_route = \
+            VoyageInfoGetter.get_stations_en_route(voyage_entity, voyage_entity.departure_station.name,
+                                                   voyage_entity.arrival_station.name)
 
         stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
         seat_prices = VoyageInfoGetter.get_seats_prices(voyage_entity, stations_to_go)
@@ -49,6 +52,29 @@ class VoyageInfoGetter:
         normal_seat_price = int(voyage.price_per_station) * stations_to_go
         bc_seat_price = voyage.bc_price_per_station * stations_to_go
         return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
+
+
+class TrainInfoGetter:
+
+    def __init__(self, train_entity):
+        self.train = train_entity
+
+        self.seats_in_wagon = 0
+
+        self.start_seats_count_from = 1
+        self.stop_seats_count_on = 0
+        self.seats_count_step = 1
+
+        self.start_wagons_count_from = 1
+        self.stop_wagons_count_on = 0
+        self.wagons_count_step = 1
+
+    def get_seat_names(self) -> dict:
+        match self.train.seats_naming_type:
+
+            case 'INCR':
+                factory = IncrementingSeatNamesCreator(self.train)
+                return factory.get_incrementing_seat_names()
 
 
 class VoyageFinder:
@@ -91,3 +117,9 @@ class VoyageFinder:
         time_part = get_zero_time()
         date_with_time = self.departure_date + time_part
         return Voyage.objects.filter(departure_datetime__gte=date_with_time)
+
+
+class TicketPurchaseHandler:
+
+    def __init__(self, form_data: dict):
+        pass
