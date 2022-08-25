@@ -1,17 +1,18 @@
 from datetime import datetime
 from urllib.parse import urlencode
+from typing import Iterable
 
 from django.http import Http404
 
 from ..constants import INDEX_FILTER_GET_PARAMETERS
 from ..models import *
 
-
-def sluggify_index_filter(data: dict) -> str:
-    result_dict = {'country': data['country'], 'departure_station': data['departure_station'].name,
-                   'arrival_station': data['arrival_station'].name, 'departure_date': data['departure_date']}
-
-    return urlencode(result_dict)
+#
+# def slugify_index_filter(data: dict) -> str:
+#     result_dict = {'country': data['country'], 'departure_station': data['departure_station'].name,
+#                    'arrival_station': data['arrival_station'].name, 'departure_date': data['departure_date']}
+#
+#     return urlencode(result_dict)
 
 
 def all_keys_exist(data_dict, keys) -> bool:

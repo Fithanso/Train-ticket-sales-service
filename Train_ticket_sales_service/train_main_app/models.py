@@ -130,6 +130,7 @@ class Train(models.Model):
 
 class PurchasedTicket(models.Model):
     customers_phone_number = models.CharField(max_length=50, verbose_name='Телефон клиента')
+    customers_country_code = models.CharField(max_length=5, default=None, verbose_name='Код страны')
     purchase_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Время покупки')
     voyage = models.ForeignKey('Voyage', on_delete=models.PROTECT, verbose_name='Маршрут')
     departure_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='departure_st',
@@ -150,7 +151,8 @@ class PurchasedTicket(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = PhoneNumberField(null=False, blank=False, unique=True)
+    country_code = models.CharField(max_length=5, default=None, verbose_name='Код страны')
+    phone_number = PhoneNumberField(null=False, blank=False, unique=True, verbose_name='Номер телефона')
 
     def __str__(self):
         return str(self.phone_number)

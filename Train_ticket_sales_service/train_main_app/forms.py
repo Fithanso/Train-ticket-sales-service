@@ -25,5 +25,11 @@ class VoyagesFilterForm(forms.Form):
 class PurchaseTicketForm(forms.Form):
     seat_names = CharField(max_length=100, widget=HiddenInput())
     voyage_pk = CharField(max_length=100, widget=HiddenInput())
+    departure_station_slug = CharField(max_length=100, widget=HiddenInput())
+    arrival_station_slug = CharField(max_length=100, widget=HiddenInput())
     customers_phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(initial='RU'), label='Номер телефона')
     customers_email = EmailField(max_length=100, label='Email')
+
+
+
+

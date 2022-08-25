@@ -15,7 +15,7 @@ class StationAdmin(admin.ModelAdmin):
 
     list_filter = ('city',)
 
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("name", "city")}
 
     readonly_fields = ('get_html_photo',)
 
