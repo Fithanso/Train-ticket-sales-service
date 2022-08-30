@@ -1,0 +1,38 @@
+
+
+div.seat_name {
+    display: inline;
+    background-color: #3AECD6;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid blue;
+    border-radius: 7px;
+}
+
+div.seat_name:hover {
+    background-color: #3CCDBB;
+}
+
+div.seat_name_chosen {
+    display: inline;
+    background-color: #21E259;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid blue;
+    border-radius: 7px;
+}
+
+div.seat_name_taken {
+    display: inline;
+    background-color: #D9D9D9;
+    cursor: not-allowed;
+    padding: 5px;
+    border: 1px solid #CECECE;
+    border-radius: 7px;
+}
+
+
+div.seat_row {
+    margin-top: 20px;
+}
+

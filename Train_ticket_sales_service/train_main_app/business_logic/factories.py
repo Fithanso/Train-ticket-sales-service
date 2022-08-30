@@ -22,7 +22,7 @@ class IncrementingSeatNamesCreator:
 
         for wagon_number in self.__get_wagons_iterator():
             wagon_number = str(wagon_number)
-            seat_names = [seat_name for seat_name in self.__get_seats_iterator()]
+            seat_names = [str(seat_name) for seat_name in self.__get_seats_iterator()]
 
             self.__shift_iteration_indent()
 

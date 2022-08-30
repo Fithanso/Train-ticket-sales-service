@@ -1,0 +1,15 @@
+#voyages_list_upper_message {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+
+}
+
+#voyages_list_upper_message h1 {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+}
+
+#voyages_list {
+    padding: 0% 3% 0% 3%;
+}

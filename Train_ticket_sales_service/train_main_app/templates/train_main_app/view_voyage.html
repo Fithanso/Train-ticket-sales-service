@@ -1,15 +1,41 @@
+{% extends 'train_main_app/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link type="text/css" href="{% static 'train_main_app/css/styles.css' %}" rel="stylesheet" />
 
-    <title>{{ voyage.voyage_entity }} - {{ voyage.voyage_entity.departure_datetime }}</title>
-</head>
-<body>
+{% block head %}
+    <link type="text/css" href="{% static 'train_main_app/css/view_voyage.css' %}" rel="stylesheet" />
+    <script src="{% static 'train_main_app/js/seats_selection.js' %}"></script>
+    <title>Seats selection</title>
+{% endblock %}
 
+
+{% block main %}
+<div id="view_voyage" class="container-fluid">
 <h1>{{ voyage.voyage_entity }}</h1>
+<h4>Choose your seats</h4>
+<div id="seats_wagons_display">
+    {% for wagon_name, wagon_info in seats_by_wagons.items %}
+
+    <div class="detailed_wagon">
+        <p>Wagon: {{ wagon_name }} {% if wagon_info.is_bc_wagon %}, Business-class {% endif %}</p>
+        <div class="seats_display">
+            {% for seat_row in wagon_info.seat_names %}
+                <div class="seat_row">
+                    {% for seat_name in seat_row %}
+                        {% if seat_name in voyage.taken_seats %}
+                            <div class="seat_name_taken">{{ seat_name }}</div>
+                        {% else %}
+                            <div class="seat_name">{{ seat_name }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <hr>
+
+    {% endfor %}
+</div>
 
 Stations: {{ voyage.stations_to_go }}
 
@@ -29,6 +55,5 @@ Stations: {{ voyage.stations_to_go }}
     <button type="submit">Купить</button>
 
 </form>
-
-</body>
-</html>
+</div>
+{% endblock %}

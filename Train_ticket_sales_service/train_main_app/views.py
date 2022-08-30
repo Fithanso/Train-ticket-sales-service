@@ -71,3 +71,4 @@ def purchase_successful(request):
     return render(request, 'train_main_app/purchase_successful.html')
 
 
+

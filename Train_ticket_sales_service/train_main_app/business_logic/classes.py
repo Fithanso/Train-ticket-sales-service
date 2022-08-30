@@ -4,7 +4,7 @@ from typing import Any, Generator, Iterable
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 
-from ..functions import get_zero_time, create_get_parameters
+from ..functions import get_zero_time, create_get_parameters, strip_in_iter
 from ..models import *
 from .factories import *
 
@@ -30,10 +30,12 @@ class VoyageInfoGetter:
 
         stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
         seat_prices = VoyageInfoGetter.get_seats_prices(voyage_entity, stations_to_go)
+        taken_seats = VoyageInfoGetter.get_taken_seats(voyage_entity)
 
         detailed_voyage = VoyageDisplayObject(voyage_entity=voyage_entity, stations_en_route=stations_en_route,
                                               departure_en_route=departure_en_route, arrival_en_route=arrival_en_route,
-                                              stations_to_go=stations_to_go, seat_prices=seat_prices)
+                                              stations_to_go=stations_to_go, seat_prices=seat_prices,
+                                              taken_seats=taken_seats)
 
         return detailed_voyage
 
@@ -51,6 +53,10 @@ class VoyageInfoGetter:
         normal_seat_price = int(voyage.price_per_station) * stations_to_go
         bc_seat_price = voyage.bc_price_per_station * stations_to_go
         return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
+
+    @staticmethod
+    def get_taken_seats(voyage: Voyage) -> list:
+        return strip_in_iter(voyage.taken_seats.split(','))
 
 
 class TrainInfoGetter:
@@ -110,7 +116,7 @@ class VoyageFinder:
                                                           arrival_en_route=arrival_en_route,
                                                           arrival_datetime=arrival_en_route.arrival_datetime,
                                                           seat_prices=seat_prices,
-                                                          link_to=voyage_link)
+                                                          link_to_purchase=voyage_link)
 
                     suitable_voyages.append(suitable_voyage)
 

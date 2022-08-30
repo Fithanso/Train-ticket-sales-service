@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, reverse
 from .classes import TrainInfoGetter, VoyageInfoGetter
 from .tickets_purchase import check_if_seats_taken, PurchaseTickets
 from ..forms import PurchaseTicketForm
+from ..functions import split_into_chunks, strip_in_iter
 from ..models import Voyage
 
 
@@ -14,6 +15,7 @@ class ViewVoyage:
         self.request = request
         self.template_name = 'train_main_app/view_voyage.html'
         self.form_class = PurchaseTicketForm
+        self.number_of_seats_in_row = 8
 
         self.departure_st_slug = ''
         self.arrival_st_slug = ''
@@ -35,12 +37,19 @@ class ViewVoyage:
         context = {'train': self.voyage.train}
 
         tr_getter = TrainInfoGetter(self.voyage.train)
-        context['seats_by_wagons'] = tr_getter.get_seat_names_by_wagons()
+        context['seats_by_wagons'] = self.divide_seat_names_into_display_groups(tr_getter.get_seat_names_by_wagons())
 
         voyage = VoyageInfoGetter.get_detailed_voyage(self.voyage, self.departure_st_slug, self.arrival_st_slug)
         context['voyage'] = voyage
 
         return context
+
+    def divide_seat_names_into_display_groups(self, seats_by_wagons):
+
+        for wagon_name, wagon_info in seats_by_wagons.items():
+            wagon_info['seat_names'] = split_into_chunks(wagon_info['seat_names'], self.number_of_seats_in_row)
+
+        return seats_by_wagons
 
     def post(self):
         self.form_data = self.request.POST
@@ -64,7 +73,7 @@ class ViewVoyage:
 
     def create_ticket_form(self):
         initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st_slug,
-                   'arrival_station_slug': self.arrival_st_slug, 'seat_names': '15,16'}
+                   'arrival_station_slug': self.arrival_st_slug}
 
         form = self.form_class(initial=initial)
 
