@@ -125,9 +125,3 @@ class VoyageFinder:
         time_part = get_zero_time()
         date_with_time = self.departure_date + time_part
         return Voyage.objects.filter(departure_datetime__gte=date_with_time)
-
-
-class TicketPurchaseHandler:
-
-    def __init__(self, form_data: dict):
-        pass

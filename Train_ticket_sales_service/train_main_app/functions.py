@@ -12,7 +12,7 @@ def create_get_parameters(keys: Iterable, values: Iterable) -> str:
     return urlencode(dict(zip(keys, values)))
 
 
-def reverse_path_with_get_params(pathname: str, params: str) -> str:
+def reverse_path_with_get_parameters(pathname: str, params: str) -> str:
     url = '{}?{}'.format(reverse(pathname), params)
     return url
 
@@ -26,3 +26,6 @@ def strip_in_iter(iterable: Iterable) -> list:
 
     return result
 
+
+def all_keys_exist(data_dict, keys) -> bool:
+    return all(key in data_dict for key in keys)

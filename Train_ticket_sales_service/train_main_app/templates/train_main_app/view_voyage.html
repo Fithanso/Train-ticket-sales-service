@@ -13,8 +13,10 @@
 
 Stations: {{ voyage.stations_to_go }}
 
-<form method="post" action="{% url 'purchase_tickets' %}">
+<form method="post" action="">
     {% csrf_token %}
+
+    <div class="errors"> {{ form.non_field_errors }}</div>
 
     {% for f in form %}
         <p>

@@ -1,31 +1,69 @@
+{% extends 'train_main_app/base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Главная</title>
-    <link type="text/css" href="{% static 'train_main_app/css/styles.css' %}" rel="stylesheet" />
 
-</head>
-<body>
+{% block head %}
+<title>Найти маршрут</title>
+<link rel="stylesheet" href="{% static 'train_main_app/css/voyage_filter.css' %}">
+{% endblock %}
 
-<form method="post" action="{{ form_action_url }}">
-    {% csrf_token %}
 
-    <div class="form-error">{{ form.non_field_errors }}</div>
+{% block main %}
+<div class="container-fluid" id="main_page">
+<div class="row">
+    <div id="voyages_filter" class="col-9">
+    <form method="post" action="">
+        {% csrf_token %}
 
-    {% for f in form %}
+        <div class="form-error">{{ form.non_field_errors }}</div>
+            <div class="container-fluid" id="voyage_filter_fields_visible">
+                {% for f in filter_form.visible_fields %}
 
-    <p>
-        {% if not f.is_hidden %} <label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label> {% endif %}
-        {{ f }}
-    </p>
+                <div class="voyage_filter_field">
 
-    <div class="form-error">{{ f.errors }}</div>
-    {% endfor %}
+                    <label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>
 
-    <button type="submit">Найти маршрут</button>
-</form>
+                    <p>{{ f }}</p>
 
-</body>
-</html>
+                    <div class="form-error">{{ f.errors }}</div>
+                </div>
+
+                {% endfor %}
+            </div>
+            <div class="container-fluid" id="voyage_filter_fields_hidden">
+                {% for f in filter_form.hidden_fields %}
+
+                    {{ f }}
+
+                    <div class="form-error">{{ f.errors }}</div>
+
+                {% endfor %}
+            </div>
+
+            <div class="container-fluid" id="voyage_filter_submit">
+                <button type="submit" class="submit_button">Подобрать маршрут</button>
+            </div>
+
+
+    </form>
+
+    </div>
+
+    <div id="find_tickets" class="col-3">
+        <h3>Поиск билетов по номеру телефона</h3>
+        <form method="post" action="">
+            {% csrf_token %}
+
+            {% for f in ticket_search_form %}
+
+            <p>
+                {{ f }}
+            </p>
+
+            <button type="submit" class="submit_button">Найти</button>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

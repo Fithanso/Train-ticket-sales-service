@@ -5,10 +5,11 @@ from .views import *
 urlpatterns = [
     path('test/', deni_is_here, name='test'),
     path('', index, name='index'),
-    path('<country_name>', IndexFilter.as_view(), name='index_filter'),
-    path('voyages/', VoyagesList.as_view(), name='voyages_list'),
-    path('voyage/<int:voyage_id>/', ViewVoyage.as_view(), name='view_voyage'),
-    path('purchase_tickets/', purchase_tickets, name='purchase_tickets')
+    path('<country_name>', index_filter, name='index_filter'),
+    path('voyages/', list_voyages, name='list_voyages'),
+    path('voyage/<int:voyage_id>/', view_voyage, name='view_voyage'),
+    path('tickets/', search_purchased_tickets, name='search_purchased_tickets'),
+    path('tickets/purchase_successful/', purchase_successful, name='purchase_successful')
 ]
 
 

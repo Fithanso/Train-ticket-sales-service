@@ -1,0 +1,41 @@
+
+
+div#voyages_filter {
+    display: flex;
+    justify-content: center;
+}
+
+div#voyage_filter_fields_visible {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+
+}
+
+div#voyage_filter_submit {
+    display: flex;
+    justify-content: center;
+}
+
+div.voyage_filter_field {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin: 0px 45px 0px 45px;
+}
+
+#voyages_filter input, #voyages_filter select {
+    height: 50px;
+}
+
+#voyages_filter input[type="date"] {
+    width: 140px;
+}
+
+#voyage_filter_submit {
+    margin-top: 60px;
+}
+
+div#find_tickets {
+    margin-top: 60px;
+}

@@ -1,14 +1,16 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link type="text/css" href="{% static 'train_main_app/css/styles.css' %}" rel="stylesheet" />
+{% extends 'train_main_app/base.html' %}
 
-    <title>Подходящие маршруты</title>
-</head>
-<body>
-<h1>{{message}}</h1>
+{% load static %}
+
+{% block head %}
+<title>Доступные маршруты</title>
+<link rel="stylesheet" href="{% static 'train_main_app/css/voyages_list.css' %}">
+{% endblock %}
+
+{% block main %}
+{% if not voyages %}
+<h1>No voyages were found</h1>
+{% endif %}
 
 {% for v in voyages %}
 
@@ -35,5 +37,4 @@
 <hr>
 {% endfor %}
 
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,71 @@
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, reverse
+
+from .classes import TrainInfoGetter, VoyageInfoGetter
+from .tickets_purchase import check_if_seats_taken, PurchaseTickets
+from ..forms import PurchaseTicketForm
+from ..models import Voyage
+
+
+class ViewVoyage:
+
+    def __init__(self, request, kwargs):
+        self.voyage_id = kwargs['voyage_id']
+        self.request = request
+        self.template_name = 'train_main_app/view_voyage.html'
+        self.form_class = PurchaseTicketForm
+
+        self.departure_st_slug = ''
+        self.arrival_st_slug = ''
+        self.voyage = None
+        self.form_data = None
+
+    def get(self):
+        self.voyage = Voyage.objects.get(pk=self.voyage_id)
+
+        self.departure_st_slug = self.request.GET['departure_station']
+        self.arrival_st_slug = self.request.GET['arrival_station']
+
+        context = self.get_context_data()
+        context['form'] = self.create_ticket_form()
+
+        return render(self.request, self.template_name, context)
+
+    def get_context_data(self):
+        context = {'train': self.voyage.train}
+
+        tr_getter = TrainInfoGetter(self.voyage.train)
+        context['seats_by_wagons'] = tr_getter.get_seat_names_by_wagons()
+
+        voyage = VoyageInfoGetter.get_detailed_voyage(self.voyage, self.departure_st_slug, self.arrival_st_slug)
+        context['voyage'] = voyage
+
+        return context
+
+    def post(self):
+        self.form_data = self.request.POST
+
+        self.voyage = Voyage.objects.get(pk=self.form_data['voyage_pk'])
+        self.voyage_id = self.voyage.pk
+
+        self.departure_st_slug = self.form_data['departure_station_slug']
+        self.arrival_st_slug = self.form_data['arrival_station_slug']
+
+        form = self.form_class(self.request.POST)
+        context = self.get_context_data()
+        context['form'] = form
+
+        if form.is_valid():
+            purchase_handler = PurchaseTickets(form.cleaned_data)
+            purchase_handler.process_purchase()
+            return redirect(reverse('purchase_successful'))
+        else:
+            return render(self.request, self.template_name, context)
+
+    def create_ticket_form(self):
+        initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st_slug,
+                   'arrival_station_slug': self.arrival_st_slug, 'seat_names': '15,16'}
+
+        form = self.form_class(initial=initial)
+
+        return form

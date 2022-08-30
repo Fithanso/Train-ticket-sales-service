@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital@1&family=Noto+Sans&display=swap');
+
+body {
+    background-color: #b9b4b0;
+}
+
+* {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+nav.navbar {
+     background-color: #925e46;
+     height: 80px;
+}
+
+.navbar-brand {
+    color: #3d3336;
+    font-size: 2em;
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-family: 'Lora', serif;
+    margin-left: 40px;
+}
+
+.nav-item {
+    margin-left: 40px;
+}
+
+.nav-item a {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #3d3336;
+}
+
+input, select {
+    height: 40px;
+    width: 260px;
+    padding: 10px;
+    background-color: #AEABA7;
+    border: 1px solid #A8A5A2;
+    border-radius: 5px;
+
+
+}
+
+.submit_button {
+    background-color: #c59764;
+    border: 2px solid #B68C5D;
+    border-radius: 10px;
+    padding: 10px;
+}
