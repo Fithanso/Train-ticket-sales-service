@@ -11,12 +11,12 @@ from django.forms import *
 from urllib.parse import urlencode
 import phonenumbers as pn
 
-from .business_logic.classes import *
+from .business_logic.detailed_model_info_providers import *
 from .business_logic.list_voyages import ListVoyages
 from .forms import *
 from .constants import *
 from .functions import *
-from .business_logic.index_filter import *
+from .business_logic.voyages_filter import *
 from .business_logic.tickets_purchase import *
 from .business_logic.detailed_voyage import *
 from .models import *
@@ -27,7 +27,7 @@ def deni_is_here(request):
 
 
 def index(request):
-    return redirect('index_filter', country_name='russia')
+    return redirect('voyages_filter', country_slug='russia')
 
 
 def search_purchased_tickets(request):
@@ -39,7 +39,7 @@ def search_purchased_tickets(request):
         raise Http404()
 
 
-def index_filter(request, *args, **kwargs):
+def voyages_filter(request, *args, **kwargs):
     handler_object = IndexFilter(request, kwargs)
 
     if request.method == 'GET':
@@ -69,6 +69,5 @@ def view_voyage(request, *args, **kwargs):
 
 def purchase_successful(request):
     return render(request, 'train_main_app/purchase_successful.html')
-
 
 

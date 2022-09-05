@@ -1,5 +1,13 @@
 
 
+div#view_voyage {
+    padding: 30px;
+}
+
+div#seats_wagons_display {
+    margin-top: 30px;
+}
+
 div.seat_name {
     display: inline;
     background-color: #3AECD6;
@@ -7,6 +15,10 @@ div.seat_name {
     padding: 5px;
     border: 1px solid blue;
     border-radius: 7px;
+}
+
+div.bc_seat {
+    background-color: #C13EEB;
 }
 
 div.seat_name:hover {
@@ -34,5 +46,21 @@ div.seat_name_taken {
 
 div.seat_row {
     margin-top: 20px;
+
 }
+
+div.detailed_wagon {
+    display: inline-block;
+    margin: 30px;
+}
+
+div#total_cost_container {
+    font-size: 1.2em;
+    margin: 20px 0px 20px 0px;
+}
+
+div#total_cost_container * {
+    display: inline;
+}
+
 

@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1> Purchase successful. </h1>
-<h2> You can find your tickets on the main page by your phone number. </h2>
-<a href="{% url 'index' %}">Go to main page</a>
-</body>
-</html>
+{% extends 'train_main_app/base.html' %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'train_main_app/css/purchase_successful.css' %}">
+<title>Purchase successful</title>
+{% endblock %}
+
+
+{% block main %}
+<div id="successful_purchase_container">
+    <h1> Purchase successful. </h1>
+    <h2> You can find your tickets on the main page by your phone number. </h2>
+    <a href="{% url 'index' %}">Go to main page</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+
+div#tickets_search_result {
+    margin-top: 70px;
+    padding: 0px 200px 0px 200px;
+}
+
+div.ticket_card {
+    border-top: 4px solid cyan;
+    border-bottom: 4px solid cyan;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding: 20px;
+}
+
+div.ticket_card .voyage_title {
+    font-size: 1.4em;
+}
+
+div.departure_arrival_stations_info {
+    margin-top: 40px;
+}
+
+img {
+    max-width: 80px;
+}
+
+.lower_info_row {
+    margin: 40px 0px 40px 0px;
+}
+
+.lower_info_row > * {
+    display: inline;
+    margin: 0px 40px 0px 40px;
+}
+
+.seat_number_container {
+    color: blue;
+    font-size: 1.5em;
+}

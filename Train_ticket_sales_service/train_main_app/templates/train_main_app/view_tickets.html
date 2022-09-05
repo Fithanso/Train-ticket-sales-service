@@ -1,20 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'train_main_app/base.html' %}
 
-<div id="tickets_search_result">
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'train_main_app/css/view_tickets.css' %}">
+    <title>Search results</title>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid" id="tickets_search_result">
     {% if not tickets %}
         <h1>No tickets were purchased given this number</h1>
     {% else %}
         {% for t in tickets %}
-            <p>{{ t.departure_station }} - {{ t.arrival_station }}, seat {{ t.seat_number }}</p>
+        <div class="ticket_card">
+            <p class="voyage_title">Voyage: {{ t.ticket.voyage }}</p>
+
+            <div class="departure_arrival_stations_info row">
+                <div class="col-3"></div>
+                <div class="departure_block col-2">
+                    <p class="departure_time">{{ t.departure_time }}</p>
+                    <p class="departure_station"> {{ t.departure_station_name }}</p>
+                </div>
+                <div class="col-1"><img src="{% static 'train_main_app/system_images/right-arrow.png' %}"></div>
+                <div class="arrival_block col-3">
+                    <p class="departure_time">{{ t.arrival_time }}</p>
+                    <p class="departure_station"> {{ t.arrival_station_name }}</p>
+                </div>
+                <div class="col-3"></div>
+            </div>
+
+            <div class="lower_info_row">
+                <span class="seat_number_container">Seat number: {{ t.ticket.seat_number }}</span>
+                <span>Purchased with this phone number: {{ t.customers_phonenumber }}</span>
+                <span>Time of purchase:  {{ t.ticket.purchase_datetime }}</span>
+
+            </div>
+
+
+        </div>
         {% endfor %}
     {% endif %}
 </div>
-
-</body>
-</html>
+{% endblock %}

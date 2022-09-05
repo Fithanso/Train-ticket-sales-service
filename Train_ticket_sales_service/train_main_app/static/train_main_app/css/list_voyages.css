@@ -13,3 +13,43 @@
 #voyages_list {
     padding: 0% 3% 0% 3%;
 }
+
+div.voyage_card {
+    border-top: 4px solid cyan;
+    border-bottom: 4px solid cyan;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.departure_arrival_stations_info {
+    margin: 50px 0px 30px 0px;
+}
+
+div.departure_arrival_stations_info img {
+    max-width: 80px;
+}
+
+div.stations_scheme {
+    display: inline;
+    margin: 10px 0px 30px 0px;
+}
+
+div.stations_scheme .highlighted_station {
+    color: cyan;
+}
+
+img.stations_scheme_arrow {
+    width: 30px;
+    margin: 0px 20px 0px 20px;
+}
+
+div.prices_block {
+    margin-top: 10px;
+    display: block;
+}
+
+div.prices_block p {
+    font-size: 1.1em;
+}

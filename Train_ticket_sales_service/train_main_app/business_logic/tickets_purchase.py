@@ -1,17 +1,21 @@
+from typing import Optional, List, Any
+
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Q
 
 import phonenumbers as pn
 from datetime import datetime
 
+from .classes.abstract import AbstractSeatsHandler
+from .detailed_model_info_providers import PurchasedTicketInfoGetter
 from ..models import Voyage
 from ..functions import *
 from ..forms import *
 
 
 def add_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
-
     voyage_seats = voyage.taken_seats.split(',')
 
     # strip existing just in case
@@ -40,13 +44,36 @@ class SearchPurchasedTickets:
         self.request = request
 
     def get(self):
-        tickets_info = self.search_tickets()
-        return render(self.request, 'train_main_app/view_tickets.html', {'tickets': tickets_info})
+        data = self.get_context_data()
+        return render(self.request, 'train_main_app/view_tickets.html', data)
 
-    def search_tickets(self) -> QuerySet:
+    def get_context_data(self):
+        data = {'tickets': self.search_tickets()}
+        return data
+
+    def search_tickets(self) -> list:
+
         phone_number = self.request.GET['phone_number']
         country_code = self.request.GET['country_code']
-        return PurchasedTicket.objects.filter(customers_phone_number=phone_number, customers_country_code=country_code)
+
+        detailed_tickets = []
+
+        tickets = PurchasedTicket.objects.filter(customers_phone_number=phone_number,
+                                                 customers_region_code=country_code).order_by('-purchase_datetime')
+
+        for ticket in tickets:
+            details = {}
+            details['ticket'] = ticket
+            details['departure_station_name'] = ticket.departure_station.station.name
+            details['departure_time'] = ticket.departure_station.arrival_datetime
+
+            details['arrival_station_name'] = ticket.arrival_station.station.name
+            details['arrival_time'] = ticket.arrival_station.arrival_datetime
+            details['customers_phonenumber'] = PurchasedTicketInfoGetter.get_customers_phonenumber(ticket)
+
+            detailed_tickets.append(details)
+
+        return detailed_tickets
 
 
 class PurchaseTickets:
@@ -55,9 +82,9 @@ class PurchaseTickets:
 
     def process_purchase(self):
         object_data = self.create_data_for_ticket()
-        
+
         voyage = Voyage.objects.get(pk=self.data['voyage_pk'])
-        object_data.update({'voyage': voyage})
+        object_data['voyage'] = voyage
 
         seat_names = tuple(self.data['seat_names'].split(','))
 
@@ -72,12 +99,30 @@ class PurchaseTickets:
         pn_object = self.data['customers_phone_number']
 
         object_data['customers_phone_number'] = pn_object.national_number
-        object_data['customers_country_code'] = pn.region_code_for_country_code(pn_object.country_code)
+        object_data['customers_region_code'] = pn.region_code_for_country_code(pn_object.country_code)
 
-        object_data['departure_station'] = Station.objects.get(slug=self.data['departure_station_slug'])
-        object_data['arrival_station'] = Station.objects.get(slug=self.data['arrival_station_slug'])
+        object_data['departure_station'] = StationInVoyage.objects.get(pk=self.data['departure_en_route_id'])
+        object_data['arrival_station'] = StationInVoyage.objects.get(pk=self.data['arrival_en_route_id'])
 
         object_data['purchase_datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         return object_data
 
+
+class NoSeatsSelectedHandler(AbstractSeatsHandler):
+
+    def handle(self, seat_names: str, voyage: Voyage) -> Optional[str]:
+        if seat_names == '':
+            error_message = 'Choose your seats'
+            return error_message
+
+
+class SeatsTakenHandler(AbstractSeatsHandler):
+
+    def handle(self, seat_names: str, voyage: Voyage) -> Optional[str]:
+        seat_names = tuple(seat_names.split(','))
+        seats_taken = check_if_seats_taken(seat_names, voyage)
+
+        if seats_taken:
+            error_message = 'Requested seats are already taken: ' + ', '.join(seats_taken)
+            return error_message

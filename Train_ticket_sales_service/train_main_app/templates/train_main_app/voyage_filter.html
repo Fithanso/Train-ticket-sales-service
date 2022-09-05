@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block head %}
-<title>Найти маршрут</title>
+<title>Find route</title>
 <link rel="stylesheet" href="{% static 'train_main_app/css/voyage_filter.css' %}">
 {% endblock %}
 
@@ -41,7 +41,7 @@
             </div>
 
             <div class="container-fluid" id="voyage_filter_submit">
-                <button type="submit" class="submit_button">Подобрать маршрут</button>
+                <button type="submit" class="submit_button">Find route</button>
             </div>
 
 
@@ -51,7 +51,7 @@
     </div>
 
     <div id="find_tickets" class="col-3">
-        <h3>Поиск билетов по номеру телефона</h3>
+        <h3>Find tickets with your phone number</h3>
         <form method="post" action="">
             {% csrf_token %}
 
@@ -61,7 +61,7 @@
                 {{ f }}
             </p>
 
-            <button type="submit" class="submit_button">Найти</button>
+            <button type="submit" class="submit_button">Search</button>
             {% endfor %}
         </form>
     </div>

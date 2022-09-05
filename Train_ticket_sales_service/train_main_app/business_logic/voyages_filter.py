@@ -1,11 +1,11 @@
-from datetime import datetime
-
 import phonenumbers as pn
+from django.db.models import QuerySet
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-from ..constants import INDEX_FILTER_GET_PARAMETERS
-from ..functions import create_get_parameters, reverse_path_with_get_parameters, all_keys_exist
+from .detailed_model_info_providers import SiteSettingInfoGetter
+from ..constants import PHONENUMBER_INPUT_NAMES
+from ..functions import create_get_parameters, reverse_path_with_get_parameters
 from ..forms import *
 
 
@@ -24,10 +24,14 @@ class IndexFilter:
         return render(self.request, self.template_name, data)
 
     def post(self):
-        if 'customers_phone_number_1' in self.request.POST:
+
+        if self.ticket_search_form_submitted():
             return self.handle_ticket_search_form()
         else:
             return self.handle_filter_form()
+
+    def ticket_search_form_submitted(self):
+        return any(input_name in self.request.POST for input_name in PHONENUMBER_INPUT_NAMES)
 
     def handle_ticket_search_form(self):
         ticket_search_form = self.ticket_search_form(self.request.POST)
@@ -67,13 +71,13 @@ class IndexFilter:
         stations = self.get_stations_by_country()
 
         initial_values = {'departure_station': stations, 'arrival_station': stations,
-                          'country': self.kwargs['country_name'].lower()}
+                          'country': self.kwargs['country_slug'].lower()}
 
         return initial_values
 
     def get_stations_by_country(self):
-        country_name = self.kwargs['country_name'].lower()
-        country = get_object_or_404(Country, slug=country_name)
+        country_slug = self.kwargs['country_slug'].lower()
+        country = get_object_or_404(Country, slug=country_slug)
 
         return Station.objects.filter(city__country=country)
 

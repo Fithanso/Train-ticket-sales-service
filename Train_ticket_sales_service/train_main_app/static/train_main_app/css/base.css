@@ -8,6 +8,11 @@ body {
     font-family: 'Noto Sans', sans-serif;
 }
 
+div.form-error li {
+    color: #BB3210;
+    font-weight: 700;
+}
+
 nav.navbar {
      background-color: #925e46;
      height: 80px;

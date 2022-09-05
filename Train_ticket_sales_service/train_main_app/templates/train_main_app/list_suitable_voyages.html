@@ -1,6 +1,7 @@
 {% extends 'train_main_app/base.html' %}
 
 {% load static %}
+{% load main_tags %}
 
 {% block head %}
 <title>Доступные маршруты</title>
@@ -17,36 +18,52 @@
 
 <div id="voyages_list">
 {% for v in voyages %}
-    <div class="voyage_card">
+<div class="voyage_card container-fluid">
     <h2>{{ v.voyage }}</h2>
-        <div class="departure_block">
+
+    <div class="departure_arrival_stations_info row">
+        <div class="col-3"></div>
+        <div class="departure_block col-2">
             <p class="departure_time">{{ v.voyage.departure_datetime }}</p>
             <p class="departure_station"> {{ v.departure_station.name }}</p>
         </div>
-        <div class="arrival_block">
+        <div class="col-1"><img src="{% static 'train_main_app/system_images/right-arrow.png' %}"></div>
+        <div class="arrival_block col-3">
             <p class="departure_time">{{ v.arrival_datetime }}</p>
             <p class="departure_station"> {{ v.arrival_station.name }}</p>
         </div>
-    <h3>Stations en route:</h3>
-
-    <div style="display: inline">
-    {% for station in v.stations_en_route %}
-        {% if station.station == v.departure_station or station.station == v.arrival_station %}
-            <span style="color: red"> {{ station.station.name }} </span><span>{% if not forloop.last %} ---- {% endif %} </span>
-        {% else %}
-            <span> {{ station.station.name }} {% if not forloop.last %} ---- {% endif %} </span>
-        {% endif %}
-    {% endfor %}
+        <div class="col-3"></div>
     </div>
 
-    <h3>Prices:</h3>
-    <h4>Normal seat: {{ v.seat_prices.normal_seat_price }}</h4>
-    <h4>Business class seat: {{ v.seat_prices.bc_seat_price }}</h4>
+    <div class="train_info">
+            <h3>Train:</h3>
+            <p>{{ v.voyage.train }}</p>
+    </div>
+    <div class="stations_scheme">
+        <h3 class="st_in_route">Stations en route:</h3>
+        {% for station in v.stations_en_route %}
+            {% if station.station == v.departure_station or station.station == v.arrival_station %}
+                <span class="highlighted_station"> {{ station.station.name }} </span>
+            {% else %}
+                <span> {{ station.station.name }}</span>
+            {% endif %}
+            <span>
+                {% if not forloop.last %}
+                <img src="{% static 'train_main_app/system_images/right-arrow.png' %}" class="stations_scheme_arrow">
+                {% endif %}
+            </span>
+        {% endfor %}
+    </div>
+
+    <div class="prices_block">
+            <h3>Prices:</h3>
+            <p class="seat_type">Normal seat: {{ v.seat_prices.normal_seat_price }} {% currency_sign %}</p>
+            <p class="seat_type">Business class seat: {{ v.seat_prices.bc_seat_price }} {% currency_sign %}</p>
+    </div>
 
     <a href="{{ v.link_to_purchase }}"><button class="submit_button">Buy ticket</button></a>
 
-    <hr>
-    </div>
+</div>
 {% endfor %}
 </div>
 </div>

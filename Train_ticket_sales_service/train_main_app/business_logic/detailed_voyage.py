@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 
-from .classes import TrainInfoGetter, VoyageInfoGetter
-from .tickets_purchase import check_if_seats_taken, PurchaseTickets
+from .detailed_model_info_providers import TrainInfoGetter, VoyageInfoGetter
+from .tickets_purchase import PurchaseTickets
 from ..forms import PurchaseTicketForm
-from ..functions import split_into_chunks, strip_in_iter
-from ..models import Voyage
+from ..functions import split_into_chunks
+from ..models import Voyage, StationInVoyage
 
 
 class ViewVoyage:
@@ -17,6 +17,8 @@ class ViewVoyage:
         self.form_class = PurchaseTicketForm
         self.number_of_seats_in_row = 8
 
+        self.departure_en_route_id = ''
+        self.arrival_en_route_id = ''
         self.departure_st_slug = ''
         self.arrival_st_slug = ''
         self.voyage = None
@@ -25,8 +27,10 @@ class ViewVoyage:
     def get(self):
         self.voyage = Voyage.objects.get(pk=self.voyage_id)
 
-        self.departure_st_slug = self.request.GET['departure_station']
-        self.arrival_st_slug = self.request.GET['arrival_station']
+        self.departure_en_route_id = self.request.GET['departure_en_route']
+        self.arrival_en_route_id = self.request.GET['arrival_en_route']
+        self.departure_st_slug = StationInVoyage.objects.get(pk=self.departure_en_route_id).station.slug
+        self.arrival_st_slug = StationInVoyage.objects.get(pk=self.arrival_en_route_id).station.slug
 
         context = self.get_context_data()
         context['form'] = self.create_ticket_form()
@@ -73,7 +77,8 @@ class ViewVoyage:
 
     def create_ticket_form(self):
         initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st_slug,
-                   'arrival_station_slug': self.arrival_st_slug}
+                   'arrival_station_slug': self.arrival_st_slug, 'departure_en_route_id': self.departure_en_route_id,
+                   'arrival_en_route_id': self.arrival_en_route_id}
 
         form = self.form_class(initial=initial)
 

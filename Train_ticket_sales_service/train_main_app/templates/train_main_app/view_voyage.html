@@ -1,5 +1,6 @@
 {% extends 'train_main_app/base.html' %}
 {% load static %}
+{% load main_tags %}
 
 {% block head %}
     <link type="text/css" href="{% static 'train_main_app/css/view_voyage.css' %}" rel="stylesheet" />
@@ -10,9 +11,11 @@
 
 {% block main %}
 <div id="view_voyage" class="container-fluid">
-<h1>{{ voyage.voyage_entity }}</h1>
-<h4>Choose your seats</h4>
+<h1>Chosen voyage:</h1>
+<h2>{{ voyage.voyage_entity }}</h2>
+
 <div id="seats_wagons_display">
+    <h4>Choose your seats</h4>
     {% for wagon_name, wagon_info in seats_by_wagons.items %}
 
     <div class="detailed_wagon">
@@ -24,7 +27,12 @@
                         {% if seat_name in voyage.taken_seats %}
                             <div class="seat_name_taken">{{ seat_name }}</div>
                         {% else %}
-                            <div class="seat_name">{{ seat_name }}</div>
+                            {% if wagon_info.is_bc_wagon %}
+                                <div class="seat_name bc_seat" price="{{ voyage.seat_prices.bc_seat_price }}">{{ seat_name }}</div>
+                            {% else %}
+                                <div class="seat_name" price="{{ voyage.seat_prices.normal_seat_price }}">{{ seat_name }}</div>
+                            {% endif %}
+
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -32,28 +40,37 @@
         </div>
 
     </div>
-    <hr>
 
     {% endfor %}
 </div>
 
-Stations: {{ voyage.stations_to_go }}
+<div id="purchase_form">
+    Stations to go: {{ voyage.stations_to_go }}
 
-<form method="post" action="">
-    {% csrf_token %}
+    <div id="total_cost_container">
+        <p>Total price:</p>
+        <span id="total_cost_number"></span>
+        <span>{% currency_sign %}</span>
+    </div>
 
-    <div class="errors"> {{ form.non_field_errors }}</div>
 
-    {% for f in form %}
-        <p>
-            {% if not f.is_hidden %} <label for="{{ f.id_for_label }}"> {{ f.label }}: </label> {% endif %}
-            {{ f }}
-        </p>
-        <div class="form-error">{{ f.errors }}</div>
-    {% endfor %}
+    <form method="post" action="">
+        {% csrf_token %}
 
-    <button type="submit">Купить</button>
+        <div class="errors"> {{ form.non_field_errors }}</div>
 
-</form>
+        {% for f in form %}
+            <p>
+                {% if not f.is_hidden %} <label for="{{ f.id_for_label }}"> {{ f.label }}: </label> {% endif %}
+                {{ f }}
+            </p>
+            <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+
+        <button type="submit" class="submit_button">Purchase tickets</button>
+
+    </form>
+</div>
+
 </div>
 {% endblock %}

@@ -121,6 +121,13 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display_links = ('id',)
 
 
+class SiteSettingAdmin(admin.ModelAdmin):
+    fields = ('name', 'value')
+    list_display = ('name', 'value')
+    list_display_links = ('name', )
+    search_fields = ('name',)
+
+
 admin.site.register(Voyage, VoyageAdmin)
 admin.site.register(Station, StationAdmin)
 admin.site.register(City, CityAdmin)
@@ -129,3 +136,4 @@ admin.site.register(StationInVoyage, StationInVoyageAdmin)
 admin.site.register(PurchasedTicket, PurchasedTicketAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(SiteSetting, SiteSettingAdmin)
