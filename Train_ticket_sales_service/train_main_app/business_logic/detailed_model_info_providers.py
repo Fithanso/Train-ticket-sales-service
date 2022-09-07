@@ -2,7 +2,7 @@ from phonenumbers.phonenumberutil import country_code_for_region
 
 from .display_objects import VoyageDisplayObject
 from ..functions import strip_in_iter
-from ..models import *
+from ..models import Voyage, StationInVoyage, SiteSetting, Country
 
 
 class VoyageInfoGetter:
@@ -127,7 +127,7 @@ class SiteSettingInfoGetter:
 
     @staticmethod
     def get_available_countries():
-        return Country.objects.all()
+        return Country.objects.filter(available=1)
 
     @staticmethod
     def get_currency_sign():
@@ -136,3 +136,20 @@ class SiteSettingInfoGetter:
     @staticmethod
     def get_currency_name():
         return SiteSetting.objects.get(name='currency_name')
+
+    @staticmethod
+    def country_available(country_name, search_by='slug'):
+        available_countries = SiteSettingInfoGetter.get_available_countries()
+
+        attribute_values = []
+        for c in available_countries:
+
+            match search_by:
+                case 'slug':
+                    attribute_values.append(c.slug)
+
+        for v in attribute_values:
+            if country_name == v:
+                return True
+
+        return False

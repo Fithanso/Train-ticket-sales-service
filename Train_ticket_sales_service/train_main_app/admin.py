@@ -36,6 +36,8 @@ class StationInVoyageAdmin(admin.ModelAdmin):
 
     search_fields = ('voyage', 'station')
 
+    readonly_fields = ('voyage', 'station', 'arrival_datetime', 'station_order')
+
 
 class StationInVoyageInline(admin.TabularInline):
     model = StationInVoyage
@@ -80,10 +82,12 @@ class CityAdmin(admin.ModelAdmin):
 
 
 class CountryAdmin(admin.ModelAdmin):
-    fields = ('name', 'slug')
-    list_display = ('id', 'name', 'slug')
+    fields = ('name', 'slug', 'available')
+    list_display = ('id', 'name', 'slug', 'available')
 
     list_display_links = ('id', 'name')
+
+    list_editable = ('available',)
 
     search_fields = ('name', 'slug')
 

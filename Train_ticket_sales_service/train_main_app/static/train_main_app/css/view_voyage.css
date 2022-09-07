@@ -8,6 +8,17 @@ div#seats_wagons_display {
     margin-top: 30px;
 }
 
+div.voyage_time_info {
+    margin: 50px 0px 30px 0px;
+    font-size: 1.5em;
+}
+
+span#time_container {
+    color: #F347F3;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
 div.seat_name {
     display: inline;
     background-color: #3AECD6;

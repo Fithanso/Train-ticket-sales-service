@@ -2,13 +2,10 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from typing import Iterable
 
-
-from .constants import *
-from .models import *
+from .constants import DB_TIME_SEPARATOR, DB_DATE_TIME_SEPARATOR, DB_NUMBER_OF_TIME_PARTS
 
 
 def create_get_parameters(keys: Iterable, values: Iterable) -> str:
-
     return urlencode(dict(zip(keys, values)))
 
 

@@ -1,8 +1,7 @@
-
 from django.forms import *
 
 from .business_logic.tickets_purchase import NoSeatsSelectedHandler, SeatsTakenHandler
-from .models import *
+from .models import Station, Voyage
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from phonenumber_field.formfields import PhoneNumberField
 
@@ -44,6 +43,7 @@ class PurchaseTicketForm(forms.Form):
     arrival_station_slug = CharField(max_length=100, required=False, widget=HiddenInput())
     departure_en_route_id = CharField(max_length=100, required=False, widget=HiddenInput())
     arrival_en_route_id = CharField(max_length=100, required=False, widget=HiddenInput())
+    customers_timezone = CharField(max_length=50, required=False, widget=HiddenInput())
     customers_phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(initial='RU'), label='Phone number')
     customers_email = EmailField(max_length=100, label='Email')
 

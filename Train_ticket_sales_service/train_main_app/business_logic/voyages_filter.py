@@ -1,12 +1,11 @@
 import phonenumbers as pn
-from django.db.models import QuerySet
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .detailed_model_info_providers import SiteSettingInfoGetter
 from ..constants import PHONENUMBER_INPUT_NAMES
 from ..functions import create_get_parameters, reverse_path_with_get_parameters
-from ..forms import *
+from ..forms import VoyagesFilterForm, SearchTicketForm
+from ..models import Station, Country
 
 
 class IndexFilter:

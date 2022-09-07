@@ -1,18 +1,14 @@
-from typing import Optional, List, Any
+from typing import Optional
 
-from django.db.models import QuerySet
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.db.models import Q
 
 import phonenumbers as pn
 from datetime import datetime
 
 from .classes.abstract import AbstractSeatsHandler
 from .detailed_model_info_providers import PurchasedTicketInfoGetter
-from ..models import Voyage
 from ..functions import *
-from ..forms import *
+from ..models import PurchasedTicket, StationInVoyage, Voyage
 
 
 def add_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
@@ -70,6 +66,7 @@ class SearchPurchasedTickets:
             details['arrival_station_name'] = ticket.arrival_station.station.name
             details['arrival_time'] = ticket.arrival_station.arrival_datetime
             details['customers_phonenumber'] = PurchasedTicketInfoGetter.get_customers_phonenumber(ticket)
+            details['customers_timezone'] = ticket.customers_timezone
 
             detailed_tickets.append(details)
 
@@ -105,6 +102,7 @@ class PurchaseTickets:
         object_data['arrival_station'] = StationInVoyage.objects.get(pk=self.data['arrival_en_route_id'])
 
         object_data['purchase_datetime'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        object_data['customers_timezone'] = self.data['customers_timezone']
 
         return object_data
 

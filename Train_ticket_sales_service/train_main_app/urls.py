@@ -1,9 +1,8 @@
 from django.urls import path
 
-from .views import *
+from .views import index, voyages_filter, list_voyages, view_voyage, search_purchased_tickets, purchase_successful
 
 urlpatterns = [
-    path('test/', deni_is_here, name='test'),
     path('', index, name='index'),
     path('<country_slug>', voyages_filter, name='voyages_filter'),
     path('voyages/', list_voyages, name='list_voyages'),

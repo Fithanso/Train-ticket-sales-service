@@ -1,33 +1,20 @@
-from urllib.parse import urlencode
-from datetime import datetime
+from django.http import Http404
+from django.shortcuts import render
 
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, request, HttpResponseNotFound, Http404
-from django.template import RequestContext
-from django.urls import reverse, reverse_lazy
-from django.views.generic import FormView, ListView, DetailView, View
-from django.forms import *
-
-from urllib.parse import urlencode
-import phonenumbers as pn
-
-from .business_logic.detailed_model_info_providers import *
 from .business_logic.list_voyages import ListVoyages
-from .forms import *
-from .constants import *
-from .functions import *
-from .business_logic.voyages_filter import *
-from .business_logic.tickets_purchase import *
-from .business_logic.detailed_voyage import *
-from .models import *
-
-
-def deni_is_here(request):
-    return 'wow it really works'
+from .business_logic.voyages_filter import IndexFilter
+from .business_logic.tickets_purchase import SearchPurchasedTickets
+from .business_logic.detailed_voyage import ViewVoyage
+from .geo_manager import RedirectToUsersCountry
 
 
 def index(request):
-    return redirect('voyages_filter', country_slug='russia')
+    handler_object = RedirectToUsersCountry(request)
+
+    if request.method == 'GET':
+        return handler_object.get()
+    else:
+        raise Http404()
 
 
 def search_purchased_tickets(request):

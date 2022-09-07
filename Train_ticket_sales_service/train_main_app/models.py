@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
+import pytz
 
 
 class Voyage(models.Model):
@@ -27,7 +28,7 @@ class Voyage(models.Model):
     taken_seats = models.CharField(max_length=2048, blank=True, verbose_name="Taken seats")
 
     def __str__(self):
-        return self.departure_station.name + ' - ' + self.arrival_station.name
+        return self.departure_station.name + ' - ' + self.arrival_station.name + ' at ' + str(self.departure_datetime)
 
     def get_absolute_url(self):
         return reverse('view_voyage', kwargs={'voyage_id': self.pk})
@@ -44,6 +45,9 @@ class StationInVoyage(models.Model):
     station = models.ForeignKey('Station', on_delete=models.CASCADE, verbose_name='Station')
     arrival_datetime = models.DateTimeField(verbose_name='Arrival time')
     station_order = models.PositiveIntegerField(default=0, verbose_name='Station order')
+
+    def __str__(self):
+        return str(self.voyage) + ': ' + str(self.station) + ' at ' + str(self.arrival_datetime)
 
     class Meta:
         db_table = 'stations_in_voyage'
@@ -86,6 +90,7 @@ class City(models.Model):
 class Country(models.Model):
     name = models.CharField(max_length=255, verbose_name='Name')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
+    available = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -132,9 +137,13 @@ class Train(models.Model):
 
 
 class PurchasedTicket(models.Model):
+
+    timezones = tuple(zip(pytz.all_timezones, pytz.all_timezones))
+
     customers_phone_number = models.CharField(max_length=50, verbose_name='Customers phone numebr')
     customers_region_code = models.CharField(max_length=5, default=None, verbose_name='Region code')
     purchase_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Time of purchase')
+    customers_timezone = models.CharField(max_length=32, choices=timezones, default='Europe/Moscow')
     voyage = models.ForeignKey('Voyage', on_delete=models.PROTECT, verbose_name='Voyage')
     departure_station = models.ForeignKey('StationInVoyage', on_delete=models.PROTECT, related_name='departure_st',
                                           verbose_name='Departure station')
@@ -143,7 +152,7 @@ class PurchasedTicket(models.Model):
     seat_number = models.CharField(max_length=50, verbose_name='Seat number')
 
     def __str__(self):
-        return str(self.customers_phone_number) + self.voyage.primary_key
+        return str(self.customers_phone_number) + " - " + str(self.voyage)
 
     class Meta:
         db_table = 'purchased_tickets'

@@ -5,14 +5,21 @@
 {% block head %}
     <link type="text/css" href="{% static 'train_main_app/css/view_voyage.css' %}" rel="stylesheet" />
     <script src="{% static 'train_main_app/js/seats_selection.js' %}"></script>
+    <script src="{% static 'train_main_app/js/get_time.js' %}"></script>
     <title>Seats selection</title>
 {% endblock %}
 
 
 {% block main %}
 <div id="view_voyage" class="container-fluid">
-<h1>Chosen voyage:</h1>
-<h2>{{ voyage.voyage_entity }}</h2>
+<div class="voyage_title">
+    <h1>Chosen voyage:</h1>
+    <h2>{{ voyage.voyage_entity }}</h2>
+</div>
+
+<div class="voyage_time_info">
+    <p>Time in the city of departure: <span id="time_container">{{ time_in_dep_city }} </span> </p>
+</div>
 
 <div id="seats_wagons_display">
     <h4>Choose your seats</h4>

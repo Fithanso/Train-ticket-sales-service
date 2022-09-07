@@ -1,8 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, reverse, redirect
 
 from .detailed_model_info_providers import TrainInfoGetter, VoyageInfoGetter
+
 from .tickets_purchase import PurchaseTickets
+from ..api_funcs.geo_api import get_tz_by_name
 from ..forms import PurchaseTicketForm
 from ..functions import split_into_chunks
 from ..models import Voyage, StationInVoyage
@@ -76,10 +77,16 @@ class ViewVoyage:
             return render(self.request, self.template_name, context)
 
     def create_ticket_form(self):
-        initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st_slug,
-                   'arrival_station_slug': self.arrival_st_slug, 'departure_en_route_id': self.departure_en_route_id,
-                   'arrival_en_route_id': self.arrival_en_route_id}
 
+        initial = self.get_initial()
         form = self.form_class(initial=initial)
 
         return form
+
+    def get_initial(self):
+        timezone = get_tz_by_name(self.voyage.departure_city.name + ',' + self.voyage.departure_city.country.name)
+        initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st_slug,
+                   'arrival_station_slug': self.arrival_st_slug, 'departure_en_route_id': self.departure_en_route_id,
+                   'arrival_en_route_id': self.arrival_en_route_id, 'customers_timezone': timezone}
+
+        return initial

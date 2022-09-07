@@ -6,7 +6,7 @@ from datetime import datetime
 
 from .detailed_model_info_providers import VoyageInfoGetter
 from .display_objects import VoyageDisplayObject
-from ..constants import voyages_filter_GET_PARAMETERS
+from ..constants import VOYAGES_FILTER_GET_PARAMETERS
 from ..functions import all_keys_exist, create_get_parameters
 from ..models import Voyage
 
@@ -21,7 +21,7 @@ def date_has_valid_format(date_str: str, format_str: str) -> bool:
 
 
 def validate_voyages_filter_get_parameters(data):
-    if not all_keys_exist(data, voyages_filter_GET_PARAMETERS):
+    if not all_keys_exist(data, VOYAGES_FILTER_GET_PARAMETERS):
         raise Http404()
     elif not date_has_valid_format(data['departure_date'], '%Y-%m-%d'):
         raise Http404()
