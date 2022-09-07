@@ -52,7 +52,7 @@ class SearchPurchasedTickets:
         phone_number = self.request.GET['phone_number']
         country_code = self.request.GET['country_code']
 
-        detailed_tickets = []
+        detailed_tickets = {}
 
         tickets = PurchasedTicket.objects.filter(customers_phone_number=phone_number,
                                                  customers_region_code=country_code).order_by('-purchase_datetime')
