@@ -5,10 +5,12 @@ from django.shortcuts import render
 import phonenumbers as pn
 from datetime import datetime
 
-from .classes.abstract import AbstractSeatsHandler
+from .validators.params_validators import KeysExistValidator
+from .abstract import AbstractSeatsHandler, ViewHandler
 from .detailed_model_info_providers import PurchasedTicketInfoGetter
 from ..functions import *
 from ..models import PurchasedTicket, StationInVoyage, Voyage
+from ..constants import SEARCH_TICKETS_GET_PARAMETERS
 
 
 def add_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
@@ -35,13 +37,22 @@ def check_if_seats_taken(seat_names: tuple, voyage: Voyage):
     return intersection
 
 
-class SearchPurchasedTickets:
-    def __init__(self, request):
+class SearchPurchasedTickets(ViewHandler):
+    def __init__(self, request, **kwargs):
         self.request = request
+        self.redirect_to_if_invalid = kwargs.get('redirect_to_if_invalid', '')
 
     def get(self):
+        val_result = self.validate_parameters()
+        if val_result:
+            return val_result
+
         data = self.get_context_data()
         return render(self.request, 'train_main_app/view_tickets.html', data)
+
+    def validate_parameters(self):
+        if not KeysExistValidator.validate(self.request.GET, SEARCH_TICKETS_GET_PARAMETERS):
+            return self.redirect_if_invalid()
 
     def get_context_data(self):
         data = {'tickets': self.search_tickets()}
@@ -58,15 +69,12 @@ class SearchPurchasedTickets:
                                                  customers_region_code=country_code).order_by('-purchase_datetime')
 
         for ticket in tickets:
-            details = {}
-            details['ticket'] = ticket
-            details['departure_station_name'] = ticket.departure_station.station.name
-            details['departure_time'] = ticket.departure_station.arrival_datetime
-
-            details['arrival_station_name'] = ticket.arrival_station.station.name
-            details['arrival_time'] = ticket.arrival_station.arrival_datetime
-            details['customers_phonenumber'] = PurchasedTicketInfoGetter.get_customers_phonenumber(ticket)
-            details['customers_timezone'] = ticket.customers_timezone
+            details = {'ticket': ticket, 'departure_station_name': ticket.departure_station.station.name,
+                       'departure_time': ticket.departure_station.arrival_datetime,
+                       'arrival_station_name': ticket.arrival_station.station.name,
+                       'arrival_time': ticket.arrival_station.arrival_datetime,
+                       'customers_phonenumber': PurchasedTicketInfoGetter.get_customers_phonenumber(ticket),
+                       'customers_timezone': ticket.customers_timezone}
 
             detailed_tickets.append(details)
 

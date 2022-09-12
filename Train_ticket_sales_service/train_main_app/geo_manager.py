@@ -7,7 +7,7 @@ from ip2geotools.databases.noncommercial import DbIpCity
 
 from .business_logic.detailed_model_info_providers import SiteSettingInfoGetter
 from .models import SiteSetting
-from .constants import IP2GEOTOOLS_COUNTRY_NOT_FOUND_VALUE
+from .constants import COUNTRY_NOT_FOUND_VALUE
 
 
 class RedirectToUsersCountry:
@@ -36,7 +36,7 @@ class RedirectToUsersCountry:
         default_country = SiteSetting.objects.get(name='default_country')
         region_code = DbIpCity.get(self._user_ip, api_key='free').country
 
-        if region_code == IP2GEOTOOLS_COUNTRY_NOT_FOUND_VALUE:
+        if region_code == COUNTRY_NOT_FOUND_VALUE:
             return default_country
 
         country_name = slugify(pycountry.countries.get(alpha_2=region_code).name)

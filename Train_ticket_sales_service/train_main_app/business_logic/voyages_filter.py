@@ -1,29 +1,44 @@
 import phonenumbers as pn
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 
 from ..constants import PHONENUMBER_INPUT_NAMES
 from ..functions import create_get_parameters, reverse_path_with_get_parameters
 from ..forms import VoyagesFilterForm, SearchTicketForm
 from ..models import Station, Country
+from .validators.params_validators import ExistenceValidator
+from .abstract import ViewHandler
 
 
-class IndexFilter:
+class IndexFilter(ViewHandler):
 
-    def __init__(self, request, kwargs):
+    def __init__(self, request, **kwargs):
         self.request = request
         self.kwargs = kwargs
+        self.redirect_to_if_invalid = kwargs.get('redirect_to_if_invalid', '')
+        self.country_slug = kwargs['country_slug'].lower()
+
         self.template_name = 'train_main_app/voyage_filter.html'
         self.filter_form = VoyagesFilterForm
         self.ticket_search_form = SearchTicketForm
 
     def get(self):
+        val_result = self.validate_parameters()
+        if val_result:
+            return val_result
+
         data = self.get_context_data()
 
         return render(self.request, self.template_name, data)
 
-    def post(self):
+    def validate_parameters(self):
 
+        if not ExistenceValidator.validate(model=Country, search_data={'slug': self.country_slug, 'available': 1}):
+            return super().redirect_if_invalid()
+
+        return False
+
+    def post(self):
         if self.ticket_search_form_submitted():
             return self.handle_ticket_search_form()
         else:
@@ -70,14 +85,12 @@ class IndexFilter:
         stations = self.get_stations_by_country()
 
         initial_values = {'departure_station': stations, 'arrival_station': stations,
-                          'country': self.kwargs['country_slug'].lower()}
+                          'country': self.country_slug}
 
         return initial_values
 
     def get_stations_by_country(self):
-        country_slug = self.kwargs['country_slug'].lower()
-        country = get_object_or_404(Country, slug=country_slug)
-
+        country = Country.objects.get(slug=self.country_slug)
         return Station.objects.filter(city__country=country)
 
     def redirect_to_voyages_list(self, form):

@@ -1,9 +1,11 @@
 from django.db.models import QuerySet, Q
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from datetime import datetime
 
+from .abstract import ViewHandler
+from .validators.params_validators import KeysExistValidator, DateFormatValidator
 from .detailed_model_info_providers import VoyageInfoGetter
 from .display_objects import VoyageDisplayObject
 from ..constants import VOYAGES_FILTER_GET_PARAMETERS
@@ -11,33 +13,31 @@ from ..functions import all_keys_exist, create_get_parameters
 from ..models import Voyage
 
 
-def date_has_valid_format(date_str: str, format_str: str) -> bool:
-    try:
-        datetime.strptime(date_str, format_str)
-    except:
-        return False
+class ListVoyages(ViewHandler):
 
-    return True
-
-
-def validate_voyages_filter_get_parameters(data):
-    if not all_keys_exist(data, VOYAGES_FILTER_GET_PARAMETERS):
-        raise Http404()
-    elif not date_has_valid_format(data['departure_date'], '%Y-%m-%d'):
-        raise Http404()
-
-
-class ListVoyages:
-
-    def __init__(self, request):
+    def __init__(self, request, **kwargs):
         self.request = request
+        self.redirect_to_if_invalid = kwargs.get('redirect_to_if_invalid', '')
         self.template_name = 'train_main_app/list_suitable_voyages.html'
 
     def get(self):
-        validate_voyages_filter_get_parameters(self.request.GET)
+        val_result = self.validate_parameters()
+        if val_result:
+            return val_result
+
         context = self.get_context_data()
 
         return render(self.request, self.template_name, context)
+
+    def validate_parameters(self):
+        get_data = self.request.GET
+
+        if not KeysExistValidator.validate(get_data, VOYAGES_FILTER_GET_PARAMETERS):
+            return self.redirect_if_invalid()
+        elif not DateFormatValidator.validate(get_data['departure_date'], '%Y-%m-%d'):
+            return self.redirect_if_invalid()
+
+        return False
 
     def get_context_data(self):
         finder = VoyageFinder(self.request.GET)
@@ -93,4 +93,3 @@ class VoyageFinder:
 
     def filter_voyages_by_date(self) -> QuerySet:
         return Voyage.objects.filter(Q(departure_datetime__date=self.departure_date))
-

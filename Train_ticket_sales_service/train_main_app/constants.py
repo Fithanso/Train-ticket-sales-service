@@ -3,6 +3,8 @@ DB_TIME_SEPARATOR = ':'
 DB_NUMBER_OF_TIME_PARTS = 3
 DB_DATE_TIME_SEPARATOR = " "
 VOYAGES_FILTER_GET_PARAMETERS = ('departure_station', 'arrival_station', 'departure_date')
+DETAILED_VOYAGE_GET_PARAMETERS = ('departure_en_route', 'arrival_en_route')
+SEARCH_TICKETS_GET_PARAMETERS = ('country_code', 'phone_number')
 PHONENUMBER_INPUT_NAMES = ['customers_phone_number_0', 'customers_phone_number_1']
-IP2GEOTOOLS_COUNTRY_NOT_FOUND_VALUE = 'ZZ'
+COUNTRY_NOT_FOUND_VALUE = 'ZZ'
 

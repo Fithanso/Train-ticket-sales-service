@@ -18,7 +18,7 @@ def index(request):
 
 
 def search_purchased_tickets(request):
-    handler_object = SearchPurchasedTickets(request)
+    handler_object = SearchPurchasedTickets(request, redirect_to_if_invalid='index')
 
     if request.method == 'GET':
         return handler_object.get()
@@ -27,7 +27,7 @@ def search_purchased_tickets(request):
 
 
 def voyages_filter(request, *args, **kwargs):
-    handler_object = IndexFilter(request, kwargs)
+    handler_object = IndexFilter(request, **kwargs, redirect_to_if_invalid='index')
 
     if request.method == 'GET':
         return handler_object.get()
@@ -36,7 +36,7 @@ def voyages_filter(request, *args, **kwargs):
 
 
 def list_voyages(request):
-    handler_object = ListVoyages(request)
+    handler_object = ListVoyages(request, redirect_to_if_invalid='index')
 
     if request.method == 'GET':
         return handler_object.get()
@@ -46,7 +46,7 @@ def list_voyages(request):
 
 def view_voyage(request, *args, **kwargs):
 
-    handler_object = ViewVoyage(request, kwargs)
+    handler_object = ViewVoyage(request, **kwargs, redirect_to_if_invalid='index')
 
     if request.method == 'GET':
         return handler_object.get()
