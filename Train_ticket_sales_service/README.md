@@ -5,3 +5,6 @@ The application is built on the assumption that there are only two classes of se
 And also that all wagons are the same.
 
 NOTE: 'bc' in code means 'business class'
+
+Application has divided setting files - a base one, one for local development by me and one for production.
+

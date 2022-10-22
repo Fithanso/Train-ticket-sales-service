@@ -114,15 +114,6 @@ class IncrementingSeatNamesCreator:
         self.stop_wagons_count_on = self.train.wagons_number + self.start_wagons_count_from
 
 
-class PurchasedTicketInfoGetter:
-
-    @staticmethod
-    def get_customers_phonenumber(ticket):
-        country_code = country_code_for_region(ticket.customers_region_code)
-
-        return '+' + str(country_code) + ticket.customers_phone_number
-
-
 class SiteSettingInfoGetter:
 
     @staticmethod

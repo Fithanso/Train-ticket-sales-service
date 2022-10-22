@@ -105,20 +105,6 @@ class TrainAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-class PurchasedTicketAdmin(admin.ModelAdmin):
-    fields = ('voyage', 'customers_phone_number', 'purchase_datetime', 'departure_station', 'arrival_station',
-              'seat_number')
-    list_display = ('id', 'voyage', 'customers_phone_number', 'purchase_datetime', 'departure_station',
-                    'arrival_station', 'seat_number')
-    list_display_links = ('id',)
-
-    search_fields = ('voyage', 'customers_phone_number', 'departure_station', 'arrival_station')
-
-    list_filter = ('departure_station', 'purchase_datetime', 'arrival_station')
-
-    readonly_fields = ('purchase_datetime',)
-
-
 class CustomerAdmin(admin.ModelAdmin):
     fields = ('user', 'phone_number')
     list_display = ('id', 'user', 'phone_number')
@@ -137,7 +123,6 @@ admin.site.register(Station, StationAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Train, TrainAdmin)
 admin.site.register(StationInVoyage, StationInVoyageAdmin)
-admin.site.register(PurchasedTicket, PurchasedTicketAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(SiteSetting, SiteSettingAdmin)
