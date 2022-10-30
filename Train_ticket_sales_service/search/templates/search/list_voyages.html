@@ -5,7 +5,7 @@
 
 {% block head %}
 <title>Suitable voyages</title>
-<link rel="stylesheet" href="{% static 'train_main_app/css/list_voyages.css' %}">
+<link rel="stylesheet" href="{% static 'search/css/list_voyages.css' %}">
 {% endblock %}
 
 {% block main %}
@@ -19,7 +19,8 @@
 <div id="voyages_list">
 {% for v in voyages %}
 <div class="voyage_card container-fluid">
-    <h2>{{ v.voyage }}</h2>
+    <h2>{{ v.departure_station.name }} - {{ v.arrival_station.name }}</h2>
+    <h2>At {{ v.voyage.departure_datetime }}</h2>
 
     <div class="departure_arrival_stations_info row">
         <div class="col-3"></div>

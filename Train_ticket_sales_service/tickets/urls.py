@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import search_purchased_tickets, purchase_successful
+from .views import PurchaseSuccessfulView, SearchPurchasedTicketsView
 
+app_name = 'tickets'
 urlpatterns = [
-    path('', search_purchased_tickets, name='search_purchased_tickets'),
-    path('purchase_successful/', purchase_successful, name='purchase_successful')
+    path('', SearchPurchasedTicketsView.as_view(), name='search_purchased_tickets'),
+    path('purchase_successful/', PurchaseSuccessfulView.as_view(), name='purchase_successful')
 ]

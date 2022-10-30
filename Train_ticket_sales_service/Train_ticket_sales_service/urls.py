@@ -14,8 +14,9 @@ from error_handlers import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('train_main_app.urls')),
-    path('api/', include('train_main_app.api_urls')),
-    path('tickets/', include('tickets.urls'))
+    path('api/', include('site_api.urls')),
+    path('tickets/', include('tickets.urls')),
+    path('search/', include('search.urls'))
 
 ]
 

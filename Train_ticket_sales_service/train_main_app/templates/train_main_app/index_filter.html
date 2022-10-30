@@ -4,7 +4,7 @@
 
 {% block head %}
 <title>Find route</title>
-<link rel="stylesheet" href="{% static 'train_main_app/css/voyage_filter.css' %}">
+<link rel="stylesheet" href="{% static 'train_main_app/css/index_filter.css' %}">
 {% endblock %}
 
 
@@ -12,8 +12,9 @@
 <div class="container-fluid" id="main_page">
 <div class="row">
     <div id="voyages_filter" class="col-9">
-    <form method="post" action="">
-        {% csrf_token %}
+
+    <form method="get" action="{% url 'search:list_voyages' %}">
+        <h1>Choose where to go in the glorious country of {{country_object.name}}!</h1>
 
         <div class="form-error">{{ form.non_field_errors }}</div>
             <div class="container-fluid" id="voyage_filter_fields_visible">
@@ -52,8 +53,7 @@
 
     <div id="find_tickets" class="col-3">
         <h3>Find tickets with your phone number</h3>
-        <form method="post" action="">
-            {% csrf_token %}
+        <form method="get" action="{% url 'tickets:search_purchased_tickets' %}">
 
             {% for f in ticket_search_form %}
 

@@ -3,6 +3,7 @@
 div#voyages_filter {
     display: flex;
     justify-content: center;
+    margin-top: 80px;
 }
 
 div#voyage_filter_fields_visible {

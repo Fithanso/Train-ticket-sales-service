@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from ..abstract import ParamValidator
-from ...functions import all_keys_exist
+from ..functions import all_keys_exist
 
 
 class ExistenceValidator(ParamValidator):

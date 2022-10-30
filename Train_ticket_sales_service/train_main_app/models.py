@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
-import pytz
+
+from .factories import IncrementingSeatNamesCreator
+from .functions import strip_in_iter
+from .display_objects import VoyageDisplayObject
 
 
 class Voyage(models.Model):
@@ -31,7 +34,38 @@ class Voyage(models.Model):
         return self.departure_station.name + ' - ' + self.arrival_station.name + ' at ' + str(self.departure_datetime)
 
     def get_absolute_url(self):
-        return reverse('view_voyage', kwargs={'voyage_id': self.pk})
+        return reverse('search:view_voyage', kwargs={'voyage_id': self.pk})
+
+    def for_display(self, departure_st_slug, arrival_st_slug):
+        stations_en_route, departure_en_route, arrival_en_route = \
+            self.get_stations_en_route(departure_st_slug, arrival_st_slug)
+
+        stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
+        seat_prices = self.get_seats_prices(stations_to_go)
+        taken_seats = self.get_taken_seats()
+
+        detailed_voyage = VoyageDisplayObject(voyage_entity=self, stations_en_route=stations_en_route,
+                                              departure_en_route=departure_en_route, arrival_en_route=arrival_en_route,
+                                              stations_to_go=stations_to_go, seat_prices=seat_prices,
+                                              taken_seats=taken_seats)
+
+        return detailed_voyage
+
+    def get_stations_en_route(self, departure_st_slug: str, arrival_st_slug: str) -> tuple:
+        stations_en_route = StationInVoyage.objects.filter(voyage=self).order_by('station_order')
+        departure_en_route = stations_en_route.filter(station__slug=departure_st_slug)
+        arrival_en_route = stations_en_route.filter(station__slug=arrival_st_slug)
+
+        return (stations_en_route, departure_en_route[0] if departure_en_route.exists() else None,
+                arrival_en_route[0] if arrival_en_route.exists() else None)
+
+    def get_seats_prices(self, stations_to_go=1) -> dict:
+        normal_seat_price = int(self.price_per_station) * stations_to_go
+        bc_seat_price = self.bc_price_per_station * stations_to_go
+        return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
+
+    def get_taken_seats(self) -> list:
+        return strip_in_iter(self.taken_seats.split(','))
 
     class Meta:
         db_table = 'voyages'
@@ -135,30 +169,12 @@ class Train(models.Model):
         verbose_name_plural = 'Trains'
         ordering = ['name']
 
+    def get_seat_names_by_wagons(self) -> dict:
+        match self.seats_naming_type:
 
-class PurchasedTicket(models.Model):
-
-    timezones = tuple(zip(pytz.all_timezones, pytz.all_timezones))
-
-    customers_phone_number = models.CharField(max_length=50, verbose_name='Customers phone numebr')
-    customers_region_code = models.CharField(max_length=5, default=None, verbose_name='Region code')
-    purchase_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Time of purchase')
-    customers_timezone = models.CharField(max_length=32, choices=timezones, default='Europe/Moscow')
-    voyage = models.ForeignKey('Voyage', on_delete=models.PROTECT, verbose_name='Voyage')
-    departure_station = models.ForeignKey('StationInVoyage', on_delete=models.PROTECT, related_name='departure_st',
-                                          verbose_name='Departure station')
-    arrival_station = models.ForeignKey('StationInVoyage', on_delete=models.PROTECT, related_name='arrival_st',
-                                        verbose_name='Arrival station')
-    seat_number = models.CharField(max_length=50, verbose_name='Seat number')
-
-    def __str__(self):
-        return str(self.customers_phone_number) + " - " + str(self.voyage)
-
-    class Meta:
-        db_table = 'purchased_tickets'
-        verbose_name = 'Purchased ticket'
-        verbose_name_plural = 'Purchased tickets'
-        ordering = ['purchase_datetime']
+            case 'INCR':
+                handler = IncrementingSeatNamesCreator(self)
+                return handler.get_incrementing_seat_names()
 
 
 class Customer(models.Model):
@@ -181,6 +197,35 @@ class SiteSetting(models.Model):
 
     def __str__(self):
         return self.value
+
+    @staticmethod
+    def get_available_countries():
+        return Country.objects.filter(available=1)
+
+    @staticmethod
+    def get_currency_sign():
+        return SiteSetting.objects.get(name='currency_sign')
+
+    @staticmethod
+    def get_currency_name():
+        return SiteSetting.objects.get(name='currency_name')
+
+    @staticmethod
+    def country_available(country_name, search_by='slug'):
+        available_countries = SiteSetting.get_available_countries()
+
+        attribute_values = []
+        for c in available_countries:
+
+            match search_by:
+                case 'slug':
+                    attribute_values.append(c.slug)
+
+        for v in attribute_values:
+            if country_name == v:
+                return True
+
+        return False
 
     class Meta:
         db_table = 'settings'

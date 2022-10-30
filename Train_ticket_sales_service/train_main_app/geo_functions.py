@@ -20,6 +20,7 @@ def get_tz_by_name(request):
 
 def find_location_by_name(loc_name):
     geolocator = Nominatim(user_agent="geoapiExercises")
+    # geocode не всегда доступна, поэтому поставить try except выбрасывает GeocoderUnavailable
     location = geolocator.geocode(loc_name)
 
     return location

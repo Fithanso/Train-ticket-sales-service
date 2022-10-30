@@ -1,49 +1,8 @@
 from django.db.models import QuerySet, Q
-from django.http import Http404
-from django.shortcuts import render, redirect
 
-from datetime import datetime
-
-from .abstract import ViewHandler
-from .validators.params_validators import KeysExistValidator, DateFormatValidator
-from .detailed_model_info_providers import VoyageInfoGetter
+from .models import Voyage
 from .display_objects import VoyageDisplayObject
-from ..constants import VOYAGES_FILTER_GET_PARAMETERS
-from ..functions import all_keys_exist, create_get_parameters
-from ..models import Voyage
-
-
-class ListVoyages(ViewHandler):
-
-    def __init__(self, request, **kwargs):
-        self.request = request
-        self.redirect_to_if_invalid = kwargs.get('redirect_to_if_invalid', '')
-        self.template_name = 'train_main_app/list_suitable_voyages.html'
-
-    def get(self):
-        val_result = self.validate_parameters()
-        if val_result:
-            return val_result
-
-        context = self.get_context_data()
-
-        return render(self.request, self.template_name, context)
-
-    def validate_parameters(self):
-        get_data = self.request.GET
-
-        if not KeysExistValidator.validate(get_data, VOYAGES_FILTER_GET_PARAMETERS):
-            return self.redirect_if_invalid()
-        elif not DateFormatValidator.validate(get_data['departure_date'], '%Y-%m-%d'):
-            return self.redirect_if_invalid()
-
-        return False
-
-    def get_context_data(self):
-        finder = VoyageFinder(self.request.GET)
-        context = {'voyages': finder.find_suitable_voyages()}
-
-        return context
+from .functions import create_get_parameters
 
 
 class VoyageFinder:
@@ -62,13 +21,13 @@ class VoyageFinder:
         for voyage in voyages_with_suitable_time:
 
             stations_en_route, departure_en_route, arrival_en_route = \
-                VoyageInfoGetter.get_stations_en_route(voyage, self.departure_slug, self.arrival_slug)
+                voyage.get_stations_en_route(self.departure_slug, self.arrival_slug)
 
             if departure_en_route and arrival_en_route:
 
                 if departure_en_route.station_order < arrival_en_route.station_order:
                     self.stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
-                    seat_prices = VoyageInfoGetter.get_seats_prices(voyage, self.stations_to_go)
+                    seat_prices = voyage.get_seats_prices(self.stations_to_go)
 
                     voyage_link = self.create_link_to_detail_voyage(voyage, departure_en_route, arrival_en_route)
 

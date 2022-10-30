@@ -1,12 +1,10 @@
 from django.urls import path
 
-from .views import index, voyages_filter, list_voyages, view_voyage
+from .views import IndexFilterView, RedirectToUsersCountryView
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('<country_slug>', voyages_filter, name='voyages_filter'),
-    path('voyages/', list_voyages, name='list_voyages'),
-    path('voyage/<int:voyage_id>/', view_voyage, name='view_voyage'),
+    path('', RedirectToUsersCountryView.as_view(), name='index'),
+    path('<country_slug>', IndexFilterView.as_view(), name='voyages_filter'),
 ]
 
 

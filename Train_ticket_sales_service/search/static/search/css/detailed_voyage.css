@@ -4,7 +4,7 @@ div#view_voyage {
     padding: 30px;
 }
 
-div#seats_wagons_display {
+div#wagonscheme {
     margin-top: 30px;
 }
 
@@ -63,6 +63,11 @@ div.seat_row {
 div.detailed_wagon {
     display: inline-block;
     margin: 30px;
+}
+
+span.bc_title {
+    border-bottom: 2px solid #C13EEB;
+    border-radius: 3px;
 }
 
 div#total_cost_container {

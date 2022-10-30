@@ -1,11 +1,12 @@
 {% extends 'train_main_app/base.html' %}
+
 {% load static %}
 {% load main_tags %}
 
 {% block head %}
-    <link type="text/css" href="{% static 'train_main_app/css/view_voyage.css' %}" rel="stylesheet" />
-    <script src="{% static 'train_main_app/js/seats_selection.js' %}"></script>
-    <script src="{% static 'train_main_app/js/get_time.js' %}"></script>
+    <link type="text/css" href="{% static 'search/css/detailed_voyage.css' %}" rel="stylesheet" />
+    <script src="{% static 'search/js/seats_selection.js' %}"></script>
+    <script src="{% static 'search/js/get_time.js' %}"></script>
     <title>Seats selection</title>
 {% endblock %}
 
@@ -18,15 +19,20 @@
 </div>
 
 <div class="voyage_time_info">
-    <p>Time in the city of departure: <span id="time_container">{{ time_in_dep_city }} </span> </p>
+    <p>Time in the city of departure: <span id="time_container"> </span> </p>
 </div>
 
-<div id="seats_wagons_display">
+<div id="wagonscheme">
     <h4>Choose your seats</h4>
     {% for wagon_name, wagon_info in seats_by_wagons.items %}
 
     <div class="detailed_wagon">
-        <p>Wagon: {{ wagon_name }} {% if wagon_info.is_bc_wagon %}, Business-class {% endif %}</p>
+        <span>
+            Wagon: {{ wagon_name }}
+            {% if wagon_info.is_bc_wagon %}
+            , <span class="bc_title">Business-class </span>
+            {% endif %}
+        </span>
         <div class="seats_display">
             {% for seat_row in wagon_info.seat_names %}
                 <div class="seat_row">
