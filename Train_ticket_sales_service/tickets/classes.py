@@ -9,7 +9,7 @@ from .models import PurchasedTicket
 from . import utils
 
 
-class PurchaseTickets:
+class TicketsPurchaseHandler:
     def __init__(self, form_data):
         self.data = form_data
 
@@ -21,7 +21,7 @@ class PurchaseTickets:
 
         seat_names = tuple(self.data['seat_names'].split(','))
 
-        utils.add_taken_seats_to_voyage(seat_names, voyage)
+        utils.add_new_taken_seats_to_voyage(seat_names, voyage)
 
         for seat in seat_names:
             ticket_data['seat_number'] = seat

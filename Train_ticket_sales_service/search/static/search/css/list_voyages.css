@@ -2,12 +2,19 @@
     display: flex;
     justify-content: center;
     margin-top: 80px;
-
+    margin-bottom: 80px;
 }
 
 #voyages_list_upper_message h1 {
     font-family: 'Lora', serif;
     font-weight: 700;
+}
+
+
+
+#voyages_list_upper_message #city_photos img {
+    width: 600px;
+    border-radius: 5px;
 }
 
 #voyages_list {
@@ -33,7 +40,6 @@ div.departure_arrival_stations_info img {
 
 div.stations_scheme {
     display: inline;
-    margin: 10px 0px 30px 0px;
 }
 
 div.stations_scheme .highlighted_station {
@@ -45,11 +51,29 @@ img.stations_scheme_arrow {
     margin: 0px 20px 0px 20px;
 }
 
+div#train_info {
+    margin-top: 30px;
+}
+
+div#train_info p {
+    display: inline;
+    fon-weight: 500;
+    font-size: 1.1em;
+    border-bottom: 2px solid cyan;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+
 div.prices_block {
     margin-top: 10px;
     display: block;
 }
 
 div.prices_block p {
-    font-size: 1.1em;
+    font-size: 1.3em;
+}
+
+div.prices_block span {
+    font-size: 1.6em;
 }

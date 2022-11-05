@@ -1,0 +1,30 @@
+
+<div id="purchase_button_block">
+
+    {% if state == 'buy_warning' %}
+        <div id="warning">
+            <p>You're late, but you can still buy a ticket.</p>
+            <p>This is controlled in the site settings</p>
+        </div>
+    {% endif %}
+
+    {% if for_page == 'list_voyages' %}
+
+        {% if state in 'buy_available, buy_warning' %}
+            <a href="{{ voyage.link_to_purchase }}"><button class="submit_button">Choose seats</button></a>
+        {% elif state == 'buy_unavailable' %}
+            <button class="submit_button inactive_button" disabled>Not available</button>
+        {% endif %}
+
+    {% elif for_page == 'detailed_voyage' %}
+
+        {% if state in 'buy_available, buy_warning' %}
+            <button type="submit" class="submit_button">Purchase tickets</button>
+        {% elif state == 'buy_unavailable' %}
+            <button class="submit_button inactive_button" disabled>Not available</button>
+        {% endif %}
+
+    {% endif %}
+
+</div>
+

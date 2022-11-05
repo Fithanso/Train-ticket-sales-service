@@ -1,15 +1,11 @@
-import sys
 
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 
-sys.path.append('C:\\Users\\Matvey\\PycharmProjects\\Akhenaton\\Train_ticket_sales_service\\Train_ticket_sales_service')
-sys.path.append('C:\\Users\\Matvey\\PycharmProjects\\Akhenaton\\Train_ticket_sales_service\\train_main_app')
-
-import settings.local_fithanso as settings
-from error_handlers import *
+from .settings import local_fithanso as settings
+from .error_handlers import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -1,8 +1,11 @@
 from django.db.models import QuerySet, Q
 
-from .models import Voyage
-from .display_objects import VoyageDisplayObject
-from .functions import create_get_parameters
+
+from train_main_app.models import Voyage
+from train_main_app.display_objects import VoyageDisplayObject
+
+
+from . import utils
 
 
 class VoyageFinder:
@@ -23,13 +26,17 @@ class VoyageFinder:
             stations_en_route, departure_en_route, arrival_en_route = \
                 voyage.get_stations_en_route(self.departure_slug, self.arrival_slug)
 
+            # check if voyage includes stations we need
             if departure_en_route and arrival_en_route:
 
+                # check if stations are in correct order
                 if departure_en_route.station_order < arrival_en_route.station_order:
+
+                    # create displaying object of a suitable voyage
                     self.stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
                     seat_prices = voyage.get_seats_prices(self.stations_to_go)
 
-                    voyage_link = self.create_link_to_detail_voyage(voyage, departure_en_route, arrival_en_route)
+                    voyage_link = utils.link_to_detailed_voyage(voyage, departure_en_route, arrival_en_route)
 
                     suitable_voyage = VoyageDisplayObject(voyage=voyage,
                                                           departure_station=departure_en_route.station,
@@ -39,16 +46,12 @@ class VoyageFinder:
                                                           arrival_en_route=arrival_en_route,
                                                           arrival_datetime=arrival_en_route.arrival_datetime,
                                                           seat_prices=seat_prices,
-                                                          link_to_purchase=voyage_link)
+                                                          link_to_purchase=voyage_link,
+                                                          expired=voyage.expired(departure_en_route))
 
                     suitable_voyages.append(suitable_voyage)
 
         return suitable_voyages
-
-    def create_link_to_detail_voyage(self, voyage, dep_en_route, arr_en_route):
-        get_params_keys = ['departure_en_route', 'arrival_en_route']
-        get_params_values = [dep_en_route.pk, arr_en_route.pk]
-        return voyage.get_absolute_url() + '?' + create_get_parameters(get_params_keys, get_params_values)
 
     def filter_voyages_by_date(self) -> QuerySet:
         return Voyage.objects.filter(Q(departure_datetime__date=self.departure_date))

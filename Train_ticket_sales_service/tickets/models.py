@@ -6,7 +6,7 @@ class PurchasedTicket(models.Model):
 
     timezones = tuple(zip(pytz.all_timezones, pytz.all_timezones))
 
-    customers_phone_number = models.CharField(max_length=50, verbose_name='Customers phone numebr')
+    customers_phone_number = models.CharField(max_length=50, verbose_name='Customers phone number')
     customers_region_code = models.CharField(max_length=5, default=None, verbose_name='Region code')
     purchase_datetime = models.DateTimeField(auto_now_add=True, verbose_name='Time of purchase')
     customers_timezone = models.CharField(max_length=32, choices=timezones, default='Europe/Moscow')

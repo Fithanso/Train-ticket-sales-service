@@ -1,8 +1,6 @@
 from django.forms import *
 
 from .models import Station
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from phonenumber_field.formfields import PhoneNumberField
 
 
 class VoyagesFilterForm(forms.Form):
