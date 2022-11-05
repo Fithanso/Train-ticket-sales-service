@@ -22,9 +22,9 @@ class StationAdmin(admin.ModelAdmin):
     ordering = ['name']
 
     def get_html_photo(self, object):
-        return mark_safe(f" <img src= '{object.photo.url}' width='200' > ")
+        return mark_safe(f" <img src= '{object.photo.url}' width='70' > ")
 
-    get_html_photo.short_description = 'Miniature'
+    get_html_photo.short_description = 'Миниатюра'
 
 
 class StationInVoyageAdmin(admin.ModelAdmin):
@@ -36,7 +36,7 @@ class StationInVoyageAdmin(admin.ModelAdmin):
 
     search_fields = ('voyage', 'station')
 
-    readonly_fields = ('voyage', 'station', 'station_order')
+    readonly_fields = ('voyage', 'station', 'arrival_datetime', 'station_order')
 
 
 class StationInVoyageInline(admin.TabularInline):
@@ -44,18 +44,18 @@ class StationInVoyageInline(admin.TabularInline):
 
 
 class VoyageAdmin(admin.ModelAdmin):
+    # что мы видим на странице редактора
     fields = ('title', 'train', 'departure_city', 'departure_station', 'departure_datetime', 'arrival_city',
               'arrival_station', 'price_per_station', 'bc_price_per_station', 'taken_seats')
-
+    # что видим на странице показа всего
     list_display = ('id', 'departure_city', 'arrival_city', 'departure_station', 'departure_datetime',
                     'arrival_station')
 
     list_display_links = ('id', 'departure_city')
-
+    # по каким полям можно искать
     search_fields = ('departure_city', 'arrival_city', 'departure_station', 'arrival_station')
-
+    # по каким полям делаем фильтры справа
     list_filter = ('departure_city', 'arrival_city', 'departure_station', 'departure_datetime', 'arrival_station')
-
     save_on_top = True
 
     inlines = [StationInVoyageInline]
@@ -76,9 +76,9 @@ class CityAdmin(admin.ModelAdmin):
     readonly_fields = ('get_html_photo', )
 
     def get_html_photo(self, object):
-        return mark_safe(f" <img src= '{object.photo.url}' width='200' > ")
+        return mark_safe(f" <img src= '{object.photo.url}' width='70' > ")
 
-    get_html_photo.short_description = 'Miniature'
+    get_html_photo.short_description = 'Миниатюра'
 
 
 class CountryAdmin(admin.ModelAdmin):

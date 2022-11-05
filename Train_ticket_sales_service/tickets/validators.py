@@ -1,6 +1,6 @@
 from typing import Optional
 
-from .utils import check_taken_seats
+from .utils import find_taken_seats
 from train_main_app.models import Voyage
 from train_main_app.abstract import AbstractSeatsValidator
 
@@ -19,7 +19,7 @@ class SeatsTakenValidator(AbstractSeatsValidator):
 
     def handle(self, seat_names: str, voyage: Voyage) -> Optional[str]:
         seat_names = tuple(seat_names.split(','))
-        seats_taken = check_taken_seats(seat_names, voyage)
+        seats_taken = find_taken_seats(seat_names, voyage)
 
         if seats_taken:
             error_message = 'Requested seats are already taken: ' + ', '.join(seats_taken)

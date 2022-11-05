@@ -2,12 +2,10 @@
 
 {% load static %}
 {% load main_tags %}
-{% load search_tags %}
 
 {% block head %}
-    <title>Suitable voyages</title>
-    <link rel="stylesheet" href="{% static 'search/css/list_voyages.css' %}">
-    <link type="text/css" href="{% static 'search/css/search_common.css' %}" rel="stylesheet" />
+<title>Suitable voyages</title>
+<link rel="stylesheet" href="{% static 'search/css/list_voyages.css' %}">
 {% endblock %}
 
 {% block main %}
@@ -15,35 +13,12 @@
 <div id="voyages_list_upper_message">
     {% if not voyages %}
     <h1>No voyages were found</h1>
-    {% else %}
-    <div id="city_photos" class="row">
-
-        <div id="departure_city_photo" class="col-3">
-            {% if departure_city.photo %}
-                <img src="{{ departure_city.photo.url }}">
-            {% endif %}
-        </div>
-        <div class="col-3">
-        </div>
-
-        <div id="arrival_city_photo" class="col-3">
-            {% if arrival_city.photo %}
-                <img src="{{ arrival_city.photo.url }}">
-            {% endif %}
-        </div>
-        <div class="col-2"></div>
-    </div>
-
     {% endif %}
 </div>
 
 <div id="voyages_list">
 {% for v in voyages %}
 <div class="voyage_card container-fluid">
-    {% if v.voyage.title %}
-        <h2>{{ v.voyage.title }}</h2>
-    {% endif %}
-
     <h2>{{ v.departure_station.name }} - {{ v.arrival_station.name }}</h2>
     <h2>At {{ v.voyage.departure_datetime }}</h2>
 
@@ -61,6 +36,10 @@
         <div class="col-3"></div>
     </div>
 
+    <div class="train_info">
+            <h3>Train:</h3>
+            <p>{{ v.voyage.train }}</p>
+    </div>
     <div class="stations_scheme">
         <h3 class="st_in_route">Stations en route:</h3>
         {% for station in v.stations_en_route %}
@@ -77,17 +56,13 @@
         {% endfor %}
     </div>
 
-    <div id="train_info">
-            <h3>Train:</h3>
-            <p>{{ v.voyage.train }}</p>
-    </div>
-
     <div class="prices_block">
-        <p class="seat_type">Normal seat: <span>{{ v.seat_prices.normal_seat_price }}</span> {% currency_sign %}</p>
-            <p class="seat_type">Business class: <span> {{ v.seat_prices.bc_seat_price }} </span> {% currency_sign %}</p>
+            <h3>Prices:</h3>
+            <p class="seat_type">Normal seat: {{ v.seat_prices.normal_seat_price }} {% currency_sign %}</p>
+            <p class="seat_type">Business class seat: {{ v.seat_prices.bc_seat_price }} {% currency_sign %}</p>
     </div>
 
-    {% create_purchase_button v 'list_voyages' %}
+    <a href="{{ v.link_to_purchase }}"><button class="submit_button">Buy ticket</button></a>
 
 </div>
 {% endfor %}

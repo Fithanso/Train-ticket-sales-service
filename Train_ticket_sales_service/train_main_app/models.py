@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
-from datetime import datetime
 
 from .factories import IncrementingSeatNamesCreator
 from .functions import strip_in_iter
@@ -48,7 +47,7 @@ class Voyage(models.Model):
         detailed_voyage = VoyageDisplayObject(voyage_entity=self, stations_en_route=stations_en_route,
                                               departure_en_route=departure_en_route, arrival_en_route=arrival_en_route,
                                               stations_to_go=stations_to_go, seat_prices=seat_prices,
-                                              taken_seats=taken_seats, expired=self.expired(departure_en_route))
+                                              taken_seats=taken_seats)
 
         return detailed_voyage
 
@@ -62,16 +61,11 @@ class Voyage(models.Model):
 
     def get_seats_prices(self, stations_to_go=1) -> dict:
         normal_seat_price = int(self.price_per_station) * stations_to_go
-        bc_seat_price = int(self.bc_price_per_station) * stations_to_go
+        bc_seat_price = self.bc_price_per_station * stations_to_go
         return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
 
     def get_taken_seats(self) -> list:
         return strip_in_iter(self.taken_seats.split(','))
-
-    def expired(self, departure_en_route):
-        if departure_en_route.arrival_datetime < datetime.now():
-            return True
-        return False
 
     class Meta:
         db_table = 'voyages'
@@ -81,7 +75,6 @@ class Voyage(models.Model):
 
 
 class StationInVoyage(models.Model):
-    # should have added departure_datetime for it to be more realistic
     voyage = models.ForeignKey('Voyage', on_delete=models.CASCADE, verbose_name='Voyage')
     station = models.ForeignKey('Station', on_delete=models.CASCADE, verbose_name='Station')
     arrival_datetime = models.DateTimeField(verbose_name='Arrival time')
@@ -206,14 +199,33 @@ class SiteSetting(models.Model):
         return self.value
 
     @staticmethod
-    def get_setting(setting_name):
-        return SiteSetting.objects.get(name=setting_name)
+    def get_available_countries():
+        return Country.objects.filter(available=1)
 
     @staticmethod
-    def country_available(country_name, search_by='slug') -> bool:
-        match search_by:
-            case 'slug':
-                return Country.objects.filter(slug=country_name, available=1).exists()
+    def get_currency_sign():
+        return SiteSetting.objects.get(name='currency_sign')
+
+    @staticmethod
+    def get_currency_name():
+        return SiteSetting.objects.get(name='currency_name')
+
+    @staticmethod
+    def country_available(country_name, search_by='slug'):
+        available_countries = SiteSetting.get_available_countries()
+
+        attribute_values = []
+        for c in available_countries:
+
+            match search_by:
+                case 'slug':
+                    attribute_values.append(c.slug)
+
+        for v in attribute_values:
+            if country_name == v:
+                return True
+
+        return False
 
     class Meta:
         db_table = 'settings'

@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 
 
-class InvalidParametersRedirectMixin:
+class InvalidParametersRedirect:
     # where user should be redirected if get parameters are incorrect
     redirect_to_if_invalid = ''
 
