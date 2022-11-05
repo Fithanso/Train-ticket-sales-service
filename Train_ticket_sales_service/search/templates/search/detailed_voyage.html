@@ -2,9 +2,11 @@
 
 {% load static %}
 {% load main_tags %}
+{% load search_tags %}
 
 {% block head %}
     <link type="text/css" href="{% static 'search/css/detailed_voyage.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'search/css/search_common.css' %}" rel="stylesheet" />
     <script src="{% static 'search/js/seats_selection.js' %}"></script>
     <script src="{% static 'search/js/get_time.js' %}"></script>
     <title>Seats selection</title>
@@ -15,6 +17,9 @@
 <div id="view_voyage" class="container-fluid">
 <div class="voyage_title">
     <h1>Chosen voyage:</h1>
+    {% if v.voyage.title %}
+        <h2>{{ v.voyage.title }}</h2>
+    {% endif %}
     <h2>{{ voyage.voyage_entity }}</h2>
 </div>
 
@@ -80,7 +85,7 @@
             <div class="form-error">{{ f.errors }}</div>
         {% endfor %}
 
-        <button type="submit" class="submit_button">Purchase tickets</button>
+        {% create_purchase_button voyage 'detailed_voyage' %}
 
     </form>
 </div>

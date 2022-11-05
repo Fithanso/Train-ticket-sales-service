@@ -1,12 +1,15 @@
 from django.views.generic import ListView, TemplateView
 
 
-from train_main_app.validators.params_validators import KeysExistValidator
-from train_main_app.mixins import InvalidParametersRedirect
+import phonenumbers
 
+
+from train_main_app.validators.params_validators import KeysExistValidator
+from train_main_app.mixins import InvalidParametersRedirectMixin
 
 from .models import PurchasedTicket
 from .constants import *
+from .display_objects import TicketDisplayObject
 from . import utils
 
 
@@ -14,7 +17,7 @@ class PurchaseSuccessfulView(TemplateView):
     template_name = 'tickets/purchase_successful.html'
 
 
-class SearchPurchasedTicketsView(ListView, InvalidParametersRedirect):
+class SearchPurchasedTicketsView(ListView, InvalidParametersRedirectMixin):
     model = PurchasedTicket
     redirect_to_if_invalid = 'index'
     context_object_name = 'tickets'
@@ -40,7 +43,7 @@ class SearchPurchasedTicketsView(ListView, InvalidParametersRedirect):
     def search_tickets(self) -> list:
 
         region_code = self.request.GET['customers_phone_number_0']
-        national_number = self.request.GET['customers_phone_number_1']
+        national_number = phonenumbers.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
 
         detailed_tickets = []
 
@@ -48,15 +51,14 @@ class SearchPurchasedTicketsView(ListView, InvalidParametersRedirect):
                                                  customers_region_code=region_code).order_by('-purchase_datetime')
 
         for ticket in tickets:
-            details = {'ticket': ticket, 'departure_station_name': ticket.departure_station.station.name,
-                       'departure_time': ticket.departure_station.arrival_datetime,
-                       'arrival_station_name': ticket.arrival_station.station.name,
-                       'arrival_time': ticket.arrival_station.arrival_datetime,
-                       'customers_phonenumber': utils.get_customers_phonenumber(ticket),
-                       'customers_timezone': ticket.customers_timezone}
+            display_object = TicketDisplayObject(ticket=ticket,
+                                                 departure_station_name=ticket.departure_station.station.name,
+                                                 departure_time=ticket.departure_station.arrival_datetime,
+                                                 arrival_station_name=ticket.arrival_station.station.name,
+                                                 arrival_time=ticket.arrival_station.arrival_datetime,
+                                                 customers_phonenumber=utils.get_customers_phonenumber(ticket),
+                                                 customers_timezone=ticket.customers_timezone)
 
-            detailed_tickets.append(details)
+            detailed_tickets.append(display_object)
 
         return detailed_tickets
-
-

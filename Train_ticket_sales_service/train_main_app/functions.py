@@ -1,21 +1,53 @@
-from django.urls import reverse
+from geopy.exc import GeocoderUnavailable
+from geopy.geocoders import Nominatim
+from timezonefinder import TimezoneFinder
+import pytz
 from urllib.parse import urlencode
 from typing import Iterable
+from datetime import datetime
 
-from .constants import DB_TIME_SEPARATOR, DB_DATE_TIME_SEPARATOR, DB_NUMBER_OF_TIME_PARTS
+
+def get_time_by_address(request):
+    location = find_location_by_name(request)
+
+    tz_obj = get_tz_by_coordinates(lng=location.longitude, lat=location.latitude)
+
+    if not tz_obj:
+        return 'time unavailable'
+
+    time = datetime.now(tz_obj)
+    return time.strftime("%H:%M")
+
+
+def find_location_by_name(loc_name):
+    geolocator = Nominatim(user_agent="geoapiExercises")
+
+    try:
+        location = geolocator.geocode(loc_name)
+    except GeocoderUnavailable:
+        return False
+
+    return location
+
+
+def get_tz_by_name(request):
+    loc = find_location_by_name(request)
+    if not loc:
+        return False
+
+    return get_tz_by_coordinates(lng=loc.longitude, lat=loc.latitude)
+
+
+def get_tz_by_coordinates(lng, lat):
+    tz_finder = TimezoneFinder()
+    tz_name = tz_finder.timezone_at(lng=lng, lat=lat)
+    tz_obj = pytz.timezone(tz_name)
+
+    return tz_obj
 
 
 def create_get_parameters(keys: Iterable, values: Iterable) -> str:
     return urlencode(dict(zip(keys, values)))
-
-
-def reverse_path_with_get_parameters(pathname: str, params: str) -> str:
-    url = '{}?{}'.format(reverse(pathname), params)
-    return url
-
-
-def get_zero_time() -> str:
-    return (DB_DATE_TIME_SEPARATOR + ("00" + DB_TIME_SEPARATOR) * DB_NUMBER_OF_TIME_PARTS)[:-1]
 
 
 def strip_in_iter(iterable: Iterable) -> list:

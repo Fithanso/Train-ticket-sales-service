@@ -10,7 +10,7 @@ def get_customers_phonenumber(ticket):
     return '+' + str(country_code) + ticket.customers_phone_number
 
 
-def add_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
+def add_new_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
     voyage_seats = voyage.taken_seats.split(',')
 
     # strip existing just in case
@@ -23,7 +23,7 @@ def add_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
     voyage.save()
 
 
-def find_taken_seats(seat_names: tuple, voyage: Voyage):
+def check_taken_seats(seat_names: tuple, voyage: Voyage):
     voyage_seats = voyage.taken_seats.split(',')
 
     voyage_seats = strip_in_iter(voyage_seats)

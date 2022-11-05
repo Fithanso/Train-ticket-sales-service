@@ -8,11 +8,6 @@ from train_main_app.models import Voyage
 
 
 class PurchaseTicketForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        super(forms.Form, self).__init__(*args, **kwargs)
-        if 'initial' in kwargs:
-            self.set_initials(kwargs)
 
     seat_names = CharField(max_length=100, required=False, widget=HiddenInput())
     voyage_pk = CharField(max_length=100, required=False, widget=HiddenInput())
@@ -23,12 +18,6 @@ class PurchaseTicketForm(forms.Form):
     customers_timezone = CharField(max_length=50, required=False, widget=HiddenInput())
     customers_phone_number = PhoneNumberField(widget=PhoneNumberPrefixWidget(initial='RU'), label='Phone number')
     customers_email = EmailField(max_length=100, label='Email')
-
-    def set_initials(self, kwargs):
-        for field_name, value in kwargs['initial'].items():
-            if field_name not in self.fields:
-                raise Exception('Field does not exist in this form')
-            self.fields[field_name].initial = value
 
     def clean(self):
         self.validate_seat_names()

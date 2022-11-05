@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-from train_main_app.geo_functions import get_time_by_address
+from train_main_app.functions import get_time_by_address
 
 
 def time_by_address(request):

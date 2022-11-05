@@ -1,0 +1,15 @@
+div#purchase_button_block {
+    margin-top: 40px;
+}
+
+div#purchase_button_block p {
+    border-bottom: 2px solid yellow;
+}
+
+div#purchase_button_block > * {
+    display: inline-block;
+}
+
+div#purchase_button_block button {
+    margin-left: 40px;
+}
