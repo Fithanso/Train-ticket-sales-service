@@ -19,7 +19,7 @@ class RedirectToUsersCountryView(RedirectView):
 
 
 class IndexFilterView(TemplateView, InvalidParametersRedirectMixin):
-    redirect_to_if_invalid = 'index'
+    invalid_parameters_redirect = 'index'
 
     template_name = 'train_main_app/index_filter.html'
     filter_form = VoyagesFilterForm
@@ -72,6 +72,8 @@ class IndexFilterView(TemplateView, InvalidParametersRedirectMixin):
 
     def get_stations_by_country(self):
         return Station.objects.filter(city__country=self.country)
+
+
 
 
 

@@ -14,3 +14,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+PATH_TO_WKHTMLTOPDF_EXE = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
+
+PURCHASED_TICKETS_PDFS_PATH = os.path.join(MEDIA_ROOT, 'purchased_tickets', 'pdfs', '')
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
+EMAIL_HOST_USER = 'customerservice@kujinatra.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+
+PDF_GENERATION_MODE = 'realtime'

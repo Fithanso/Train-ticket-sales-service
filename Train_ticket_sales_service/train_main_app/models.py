@@ -11,7 +11,7 @@ from .display_objects import VoyageDisplayObject
 
 
 class Voyage(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True, verbose_name='Title')
+    name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Title')
     train = models.ForeignKey('Train', on_delete=models.PROTECT, verbose_name="Train")
     departure_datetime = models.DateTimeField(verbose_name="Departure time")
     departure_station = models.ForeignKey('Station', on_delete=models.PROTECT, related_name='departure_station',
@@ -53,9 +53,9 @@ class Voyage(models.Model):
         return detailed_voyage
 
     def get_stations_en_route(self, departure_st_slug: str, arrival_st_slug: str) -> tuple:
-        stations_en_route = StationInVoyage.objects.filter(voyage=self).order_by('station_order')
-        departure_en_route = stations_en_route.filter(station__slug=departure_st_slug)
-        arrival_en_route = stations_en_route.filter(station__slug=arrival_st_slug)
+        stations_en_route = StationInVoyage.objects.filter(voyage=self).order_by('station_order').select_related('station')
+        departure_en_route = stations_en_route.filter(station__slug=departure_st_slug).select_related('station')
+        arrival_en_route = stations_en_route.filter(station__slug=arrival_st_slug).select_related('station')
 
         return (stations_en_route, departure_en_route[0] if departure_en_route.exists() else None,
                 arrival_en_route[0] if arrival_en_route.exists() else None)
@@ -176,12 +176,11 @@ class Train(models.Model):
         verbose_name_plural = 'Trains'
         ordering = ['name']
 
-    def get_seat_names_by_wagons(self) -> dict:
-        match self.seats_naming_type:
+    def get_seat_numbers_by_wagons(self) -> dict:
 
-            case 'INCR':
-                handler = IncrementingSeatNamesCreator(self)
-                return handler.get_incrementing_seat_names()
+        if self.seats_naming_type == 'INCR':
+            handler = IncrementingSeatNamesCreator(self)
+            return handler.get_incrementing_seat_numbers()
 
 
 class Customer(models.Model):
@@ -211,9 +210,8 @@ class SiteSetting(models.Model):
 
     @staticmethod
     def country_available(country_name, search_by='slug') -> bool:
-        match search_by:
-            case 'slug':
-                return Country.objects.filter(slug=country_name, available=1).exists()
+        if search_by == 'slug':
+            return Country.objects.filter(slug=country_name, available=1).exists()
 
     class Meta:
         db_table = 'settings'

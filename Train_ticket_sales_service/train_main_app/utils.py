@@ -2,7 +2,7 @@ import pycountry
 from django.utils.text import slugify
 from ip2geotools.databases.noncommercial import DbIpCity
 
-from .constants import COUNTRY_NOT_FOUND_VALUE
+
 from .models import SiteSetting
 
 

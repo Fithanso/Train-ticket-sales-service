@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket for place# {{ seat_number }}</title>
+</head>
+
+<body>
+    <div class="ticket_card">
+        <p class="voyage_title">Voyage: {{ departure_station.voyage }}</p>
+
+        <div class="departure_arrival_stations_info row">
+            <div class="col-3"></div>
+            <div class="departure_block col-2">
+                <p>Departure:</p>
+                <p class="departure_time">{{ departure_station.station.name }}</p>
+                <p class="departure_station"> {{ departure_station.arrival_datetime }}</p>
+            </div>
+            <br>
+            <div class="arrival_block col-3">
+                <p>Arrival:</p>
+                <p class="departure_time">{{ arrival_station.station.name }}</p>
+                <p class="departure_station"> {{ arrival_station.arrival_datetime }}</p>
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="lower_info_row">
+            <span class="seat_number_container">Seat number: {{ seat_number }}</span>
+            <span>Purchased with this phone number: {{ customers_phone_number }}</span>
+            <br>
+            <br>
+            <span>Time of purchase:  {{ purchase_datetime }}        Timezone: {{ customers_timezone }}</span>
+
+        </div>
+
+        {% if t.ticket.pdf_filename %}
+            <a href="{% url 'tickets:download_ticket' t.ticket.pdf_filename %}">Download PDF</a>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

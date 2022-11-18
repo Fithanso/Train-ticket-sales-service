@@ -19,7 +19,7 @@ span#time_container {
     font-size: 1.2em;
 }
 
-div.seat_name {
+div.seat_number {
     display: inline;
     background-color: #3AECD6;
     cursor: pointer;
@@ -32,11 +32,11 @@ div.bc_seat {
     background-color: #C13EEB;
 }
 
-div.seat_name:hover {
+div.seat_number:hover {
     background-color: #3CCDBB;
 }
 
-div.seat_name_chosen {
+div.seat_number_chosen {
     display: inline;
     background-color: #21E259;
     cursor: pointer;
@@ -45,7 +45,7 @@ div.seat_name_chosen {
     border-radius: 7px;
 }
 
-div.seat_name_taken {
+div.seat_number_taken {
     display: inline;
     background-color: #D9D9D9;
     cursor: not-allowed;

@@ -13,3 +13,16 @@ div#purchase_button_block > * {
 div#purchase_button_block button {
     margin-left: 40px;
 }
+
+
+#voyage_title_block > * {
+    margin: 20px;
+}
+
+#voyage_name {
+    display: inline;
+    font-size: 1.8em;
+    border-bottom: 2px solid cyan;
+    border-radius: 5px;
+    padding: 3px;
+}

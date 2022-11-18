@@ -1,7 +1,15 @@
+import os
+import pdfkit
+import random
 from phonenumbers.phonenumberutil import country_code_for_region
+
+from django.template.loader import render_to_string
+from django.contrib.staticfiles import finders
 
 from train_main_app.functions import *
 from train_main_app.models import Voyage
+
+from Train_ticket_sales_service.settings import local_fithanso as settings
 
 
 def get_customers_phonenumber(ticket):
@@ -10,25 +18,57 @@ def get_customers_phonenumber(ticket):
     return '+' + str(country_code) + ticket.customers_phone_number
 
 
-def add_new_taken_seats_to_voyage(seat_names: tuple, voyage: Voyage):
+def add_new_taken_seats_to_voyage(seat_numbers: tuple, voyage: Voyage):
     voyage_seats = voyage.taken_seats.split(',')
 
     # strip existing just in case
     voyage_seats = strip_in_iter(voyage_seats)
-    seat_names = strip_in_iter(seat_names)
+    seat_numbers = strip_in_iter(seat_numbers)
 
-    new_seats = ','.join(voyage_seats + seat_names)
-
-    voyage.taken_seats = new_seats
+    voyage.taken_seats = ','.join(voyage_seats + seat_numbers)
     voyage.save()
 
 
-def check_taken_seats(seat_names: tuple, voyage: Voyage):
+def check_taken_seats(seat_numbers: tuple, voyage: Voyage):
     voyage_seats = voyage.taken_seats.split(',')
 
     voyage_seats = strip_in_iter(voyage_seats)
-    seat_names = strip_in_iter(seat_names)
+    seat_numbers = strip_in_iter(seat_numbers)
 
-    intersection = list(set(voyage_seats) & set(seat_names))
+    intersection = list(set(voyage_seats) & set(seat_numbers))
 
     return intersection
+
+
+def generate_ticket_pdfs(ticket_data, seat_numbers) -> dict:
+    if type(seat_numbers) in [str, int]:
+        seat_numbers = [seat_numbers]
+
+    config = pdfkit.configuration(wkhtmltopdf=settings.PATH_TO_WKHTMLTOPDF_EXE)
+    pdf_dir_path = settings.PURCHASED_TICKETS_PDFS_PATH
+
+    needed_css = [finders.find('tickets/css/list_purchased_tickets.css'),
+                  finders.find('train_main_app/css/base.css')]
+
+    rendered_pdfs = {}
+
+    for seat in seat_numbers:
+        ticket_data['seat_number'] = seat
+
+        filename = get_ticket_pdf_name(ticket_data, seat)
+        output_path = pdf_dir_path + filename
+
+        rendered_template = render_to_string('tickets/ticket_pdf_template.html', ticket_data)
+        pdf = pdfkit.from_string(rendered_template, css=needed_css, output_path=output_path, configuration=config)
+
+        rendered_pdfs[seat] = {'pdf': pdf, 'filename': filename}
+
+    return rendered_pdfs
+
+
+def get_ticket_pdf_name(ticket_data, seat_number):
+    return '_'.join([
+        str(ticket_data['departure_station'].voyage.pk),
+        str(ticket_data['customers_phone_number']),
+        str(seat_number)
+    ]) + '.pdf'

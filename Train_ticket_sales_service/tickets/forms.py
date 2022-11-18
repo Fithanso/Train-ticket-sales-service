@@ -9,7 +9,7 @@ from train_main_app.models import Voyage
 
 class PurchaseTicketForm(forms.Form):
 
-    seat_names = CharField(max_length=100, required=False, widget=HiddenInput())
+    seat_numbers = CharField(max_length=100, required=False, widget=HiddenInput())
     voyage_pk = CharField(max_length=100, required=False, widget=HiddenInput())
     departure_station_slug = CharField(max_length=100, required=False, widget=HiddenInput())
     arrival_station_slug = CharField(max_length=100, required=False, widget=HiddenInput())
@@ -20,22 +20,22 @@ class PurchaseTicketForm(forms.Form):
     customers_email = EmailField(max_length=100, label='Email')
 
     def clean(self):
-        self.validate_seat_names()
+        self.validate_seat_numbers()
 
         return self.cleaned_data
 
-    def validate_seat_names(self):
+    def validate_seat_numbers(self):
         voyage = Voyage.objects.get(pk=self.cleaned_data['voyage_pk'])
-        seat_names = self.cleaned_data['seat_names']
+        seat_numbers = self.cleaned_data['seat_numbers']
 
         no_seats_handler = NoSeatsSelectedValidator()
         seats_taken_handler = SeatsTakenValidator()
         no_seats_handler.set_next(seats_taken_handler)
 
-        result = no_seats_handler.handle(seat_names, voyage)
+        result = no_seats_handler.handle(seat_numbers, voyage)
 
         if result:
-            self.add_error('seat_names', result)
+            self.add_error('seat_numbers', result)
 
 
 class SearchTicketForm(forms.Form):

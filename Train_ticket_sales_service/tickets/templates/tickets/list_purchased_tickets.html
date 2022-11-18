@@ -4,7 +4,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'tickets/css/list_purchased_tickets.css' %}">
-    <title>Search results</title>
+    <title>Search results for {{ full_number }}</title>
 {% endblock %}
 
 {% block main %}
@@ -37,6 +37,9 @@
 
             </div>
 
+            {% if t.ticket.pdf_filename %}
+                <a href="{% url 'tickets:download_ticket' t.ticket.pdf_filename %}">Download PDF</a>
+            {% endif %}
 
         </div>
         {% endfor %}

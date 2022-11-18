@@ -4,10 +4,10 @@ from django.shortcuts import redirect
 
 class InvalidParametersRedirectMixin:
     # where user should be redirected if get parameters are incorrect
-    redirect_to_if_invalid = ''
+    invalid_parameters_redirect = ''
 
     def redirect_if_invalid(self):
-        if self.redirect_to_if_invalid:
-            return redirect(self.redirect_to_if_invalid)
+        if self.invalid_parameters_redirect:
+            return redirect(self.invalid_parameters_redirect)
         else:
             raise Http404()

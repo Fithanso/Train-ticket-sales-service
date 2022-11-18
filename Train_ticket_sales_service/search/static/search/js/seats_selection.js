@@ -4,59 +4,59 @@ $(document).ready(function () {
 
     total_cost_tag.text(total_cost)
 
-    $( ".seat_name" ).on('click', function(elem) {
-        var seat_name = $(this).text();
+    $( ".seat_number" ).on('click', function(elem) {
+        var seat_number = $(this).text();
 
-        if ( $(this).hasClass('seat_name_chosen')) {
-            remove_seat_name_from_input(seat_name);
+        if ( $(this).hasClass('seat_number_chosen')) {
+            remove_seat_number_from_input(seat_number);
             total_cost = total_cost - Number($(this).attr('price'))
         }else{
-            append_seat_name_to_input(seat_name);
+            append_seat_number_to_input(seat_number);
             total_cost = total_cost + Number($(this).attr('price'))
         }
 
-        $(this).toggleClass('seat_name_chosen');
-        $(this).toggleClass('seat_name');
+        $(this).toggleClass('seat_number_chosen');
+        $(this).toggleClass('seat_number');
 
         total_cost_tag.text(total_cost)
     });
 });
 
-function append_seat_name_to_input(seat_name) {
-    var seat_names_input = $("#id_seat_names");
-    var existing_value = seat_names_input.val();
+function append_seat_number_to_input(seat_number) {
+    var seat_numbers_input = $("#id_seat_numbers");
+    var existing_value = seat_numbers_input.val();
 
-    if (seat_already_added(seat_name)) {
+    if (seat_already_added(seat_number)) {
         return
     }
 
     if (existing_value == '') {
-        var append_str = seat_name;
+        var append_str = seat_number;
     } else {
-        var append_str = ',' + seat_name;
+        var append_str = ',' + seat_number;
     }
 
     var new_value = existing_value + append_str;
-    seat_names_input.val(new_value);
+    seat_numbers_input.val(new_value);
 
 };
 
-function seat_already_added(seat_name) {
+function seat_already_added(seat_number) {
 
-    var seat_names_input = $("#id_seat_names");
-    var existing_value_array = seat_names_input.val().split(",");
+    var seat_numbers_input = $("#id_seat_numbers");
+    var existing_value_array = seat_numbers_input.val().split(",");
 
-    return existing_value_array.includes(seat_name)
+    return existing_value_array.includes(seat_number)
 
 };
 
-function remove_seat_name_from_input(seat_name) {
-    var seat_names_input = $("#id_seat_names");
-    var existing_value_array = seat_names_input.val().split(",");
+function remove_seat_number_from_input(seat_number) {
+    var seat_numbers_input = $("#id_seat_numbers");
+    var existing_value_array = seat_numbers_input.val().split(",");
 
-    const index = existing_value_array.indexOf(seat_name);
+    const index = existing_value_array.indexOf(seat_number);
     if (index > -1) {
         existing_value_array.splice(index, 1);
     }
-    seat_names_input.val(existing_value_array);
+    seat_numbers_input.val(existing_value_array);
 };

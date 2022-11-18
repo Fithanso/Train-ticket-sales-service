@@ -12,7 +12,7 @@ class IncrementingSeatNamesCreator:
         self.stop_wagons_count_on = 0
         self.wagons_count_step = 1
 
-    def get_incrementing_seat_names(self) -> dict:
+    def get_incrementing_seat_numbers(self) -> dict:
         # method generates numbers (place names) and assigns them to wagons
         # numbers differ from wagon to wagon, so they are generated with offset
 
@@ -22,12 +22,12 @@ class IncrementingSeatNamesCreator:
 
         for wagon_number in self.__get_wagons_iterator():
             wagon_number = str(wagon_number)
-            seat_names = [str(seat_name) for seat_name in self.__get_seats_iterator()]
+            seat_numbers = [str(seat_number) for seat_number in self.__get_seats_iterator()]
 
             self.__shift_iteration_indent()
 
             is_bc = wagon_number in self.train.bc_wagons_numbers
-            seats_divided_by_wagons[wagon_number] = {'seat_names': seat_names,
+            seats_divided_by_wagons[wagon_number] = {'seat_numbers': seat_numbers,
                                                      'is_bc_wagon': is_bc}
 
         return seats_divided_by_wagons

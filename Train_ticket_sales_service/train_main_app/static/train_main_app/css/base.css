@@ -61,3 +61,11 @@ input, select {
     border-radius: 10px;
     padding: 10px;
 }
+
+.messages > li.error {
+    background-color: pink;
+    color: red;
+    font-size: 1.4em;
+    list-style-type: none;
+    padding: 10px;
+}

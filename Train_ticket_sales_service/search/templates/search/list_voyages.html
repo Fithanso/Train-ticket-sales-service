@@ -8,6 +8,10 @@
     <title>Suitable voyages</title>
     <link rel="stylesheet" href="{% static 'search/css/list_voyages.css' %}">
     <link type="text/css" href="{% static 'search/css/search_common.css' %}" rel="stylesheet" />
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/regular.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/duotone.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block main %}
@@ -39,57 +43,66 @@
 
 <div id="voyages_list">
 {% for v in voyages %}
-<div class="voyage_card container-fluid">
-    {% if v.voyage.title %}
-        <h2>{{ v.voyage.title }}</h2>
-    {% endif %}
+    <div class="voyage_card container-fluid">
 
-    <h2>{{ v.departure_station.name }} - {{ v.arrival_station.name }}</h2>
-    <h2>At {{ v.voyage.departure_datetime }}</h2>
-
-    <div class="departure_arrival_stations_info row">
-        <div class="col-3"></div>
-        <div class="departure_block col-2">
-            <p class="departure_time">{{ v.voyage.departure_datetime }}</p>
-            <p class="departure_station"> {{ v.departure_station.name }}</p>
-        </div>
-        <div class="col-1"><img src="{% static 'train_main_app/system_images/right-arrow.png' %}"></div>
-        <div class="arrival_block col-3">
-            <p class="departure_time">{{ v.arrival_datetime }}</p>
-            <p class="departure_station"> {{ v.arrival_station.name }}</p>
-        </div>
-        <div class="col-3"></div>
-    </div>
-
-    <div class="stations_scheme">
-        <h3 class="st_in_route">Stations en route:</h3>
-        {% for station in v.stations_en_route %}
-            {% if station.station == v.departure_station or station.station == v.arrival_station %}
-                <span class="highlighted_station"> {{ station.station.name }} </span>
-            {% else %}
-                <span> {{ station.station.name }}</span>
+        <div id="voyage_title_block">
+            {% if v.voyage.name %}
+                <h1 id="voyage_name">{{ v.voyage.name }}</h1>
             {% endif %}
-            <span>
-                {% if not forloop.last %}
-                <img src="{% static 'train_main_app/system_images/right-arrow.png' %}" class="stations_scheme_arrow">
+
+            <h2>{{ v.departure_station.name }} - {{ v.arrival_station.name }}</h2>
+            <h2>
+                <i class="fa-solid fa-clock"></i>
+                Departure:
+                {{ v.voyage.departure_datetime }}
+            </h2>
+        </div>
+
+        <div class="departure_arrival_stations_info row">
+            <div class="col-3"></div>
+            <div class="departure_block col-2">
+                <p class="departure_time">{{ v.voyage.departure_datetime }}</p>
+                <p class="departure_station"> {{ v.departure_station.name }}</p>
+            </div>
+            <div class="col-1"><img src="{% static 'train_main_app/system_images/right-arrow.png' %}"></div>
+            <div class="arrival_block col-3">
+                <p class="departure_time">{{ v.arrival_datetime }}</p>
+                <p class="departure_station"> {{ v.arrival_station.name }}</p>
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="stations_scheme">
+            <h3 class="st_in_route">Stations en route:</h3>
+            {% for station in v.stations_en_route %}
+
+                {% if station.station == v.departure_station or station.station == v.arrival_station %}
+                    <span class="highlighted_station"> {{ station.station.name }} </span>
+                {% else %}
+                    <span> {{ station.station.name }}</span>
                 {% endif %}
-            </span>
-        {% endfor %}
+
+                <span>
+                    {% if not forloop.last %}
+                    <img src="{% static 'train_main_app/system_images/right-arrow.png' %}" class="stations_scheme_arrow">
+                    {% endif %}
+                </span>
+            {% endfor %}
+        </div>
+
+        <div id="train_info">
+                <h3><i class="fa-solid fa-train-subway"></i></h3>
+                <p>{{ v.voyage.train }}</p>
+        </div>
+
+        <div class="prices_block">
+            <p class="seat_type">Normal seat: <span>{{ v.seat_prices.normal_seat_price }}</span> {% currency_sign %}</p>
+                <p class="seat_type">Business class: <span> {{ v.seat_prices.bc_seat_price }} </span> {% currency_sign %}</p>
+        </div>
+
+        {% create_purchase_button v 'list_voyages' %}
+
     </div>
-
-    <div id="train_info">
-            <h3>Train:</h3>
-            <p>{{ v.voyage.train }}</p>
-    </div>
-
-    <div class="prices_block">
-        <p class="seat_type">Normal seat: <span>{{ v.seat_prices.normal_seat_price }}</span> {% currency_sign %}</p>
-            <p class="seat_type">Business class: <span> {{ v.seat_prices.bc_seat_price }} </span> {% currency_sign %}</p>
-    </div>
-
-    {% create_purchase_button v 'list_voyages' %}
-
-</div>
 {% endfor %}
 </div>
 </div>

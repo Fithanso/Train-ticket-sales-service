@@ -8,7 +8,7 @@ class Validator(ABC):
         pass
 
     @abstractmethod
-    def handle(self, seat_names, voyage) -> Optional[str]:
+    def handle(self, seat_numbers, voyage) -> Optional[str]:
         pass
 
 
@@ -21,9 +21,9 @@ class AbstractSeatsValidator(Validator):
         return handler
 
     @abstractmethod
-    def handle(self, seat_names, voyage) -> str:
+    def handle(self, seat_numbers, voyage) -> str:
         if self._next_handler:
-            return self._next_handler.handle(seat_names, voyage)
+            return self._next_handler.handle(seat_numbers, voyage)
 
         return None
 
