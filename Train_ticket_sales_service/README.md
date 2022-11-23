@@ -1,3 +1,5 @@
+<h1>Version: 1.0.0</h1>
+
 This is the application where users can choose a train route based on country, departure, arrival cities and date.
 Hope you will find it worth your attention.
 

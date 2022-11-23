@@ -76,4 +76,3 @@ class IndexFilterView(TemplateView, InvalidParametersRedirectMixin):
 
 
 
-
