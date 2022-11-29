@@ -16,7 +16,7 @@ class PurchasedTicket(models.Model):
     arrival_station = models.ForeignKey('train_main_app.StationInVoyage', on_delete=models.PROTECT,
                                         related_name='arrival_st', verbose_name='Arrival station')
     seat_number = models.CharField(max_length=50, verbose_name='Seat number')
-    pdf_filename = models.CharField(max_length=50, verbose_name='PDF file')
+    pdf_filename = models.CharField(max_length=50, verbose_name='PDF file', null=True)
 
     def __str__(self):
         return str(self.customers_phone_number) + " - " + str(self.voyage)

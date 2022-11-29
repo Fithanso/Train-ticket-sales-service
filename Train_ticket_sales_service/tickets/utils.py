@@ -68,7 +68,23 @@ def generate_ticket_pdfs(ticket_data, seat_numbers) -> dict:
 
 def get_ticket_pdf_name(ticket_data, seat_number):
     return '_'.join([
-        str(ticket_data['departure_station'].voyage.pk),
+        str(ticket_data['voyage_pk']),
         str(ticket_data['customers_phone_number']),
         str(seat_number)
     ]) + '.pdf'
+
+
+def simplify_ticket_data(ticket_data):
+    ticket_data['voyage_info'] = str(ticket_data['voyage'])
+    ticket_data['voyage_pk'] = ticket_data['voyage'].pk
+    del ticket_data['voyage']
+
+    ticket_data['departure_station_name'] = ticket_data['departure_station'].station.name
+    ticket_data['departure_datetime'] = ticket_data['departure_station'].arrival_datetime
+    del ticket_data['departure_station']
+
+    ticket_data['arrival_station_name'] = ticket_data['arrival_station'].station.name
+    ticket_data['arrival_datetime'] = ticket_data['arrival_station'].arrival_datetime
+    del ticket_data['arrival_station']
+
+    return ticket_data

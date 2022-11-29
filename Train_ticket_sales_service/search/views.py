@@ -10,7 +10,7 @@ from train_main_app.validators.params_validators import KeysExistValidator, Date
 
 
 from tickets.forms import PurchaseTicketForm
-from tickets.classes import TicketsPurchaseHandler
+from tickets.purchase_handler import TicketsPurchaseHandler
 
 from .utils import divide_into_rows_for_display
 from .classes import VoyageFinder

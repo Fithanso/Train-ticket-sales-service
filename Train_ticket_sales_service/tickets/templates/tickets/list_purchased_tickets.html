@@ -39,6 +39,8 @@
 
             {% if t.ticket.pdf_filename %}
                 <a href="{% url 'tickets:download_ticket' t.ticket.pdf_filename %}">Download PDF</a>
+            {%else%}
+                <p>PDF has not been generated yet. If you waited more than five minutes, contact support.</p>
             {% endif %}
 
         </div>

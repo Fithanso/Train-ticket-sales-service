@@ -217,3 +217,6 @@ class SiteSetting(models.Model):
         db_table = 'settings'
         verbose_name = 'Setting'
         verbose_name_plural = 'Settings'
+
+
+
