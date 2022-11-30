@@ -1,4 +1,5 @@
 from .base import *
+from decouple import config
 
 DEBUG = True
 INSTALLED_APPS += ['debug_toolbar']
@@ -24,8 +25,6 @@ PURCHASED_TICKETS_PDFS_PATH = os.path.join(MEDIA_ROOT, 'purchased_tickets', 'pdf
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = '1025'
-EMAIL_HOST_USER = 'customerservice@kujinatra.com'
-EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 
 PDF_GENERATION_MODE = 'async'
@@ -33,3 +32,6 @@ PDF_GENERATION_MODE = 'async'
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
+
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')

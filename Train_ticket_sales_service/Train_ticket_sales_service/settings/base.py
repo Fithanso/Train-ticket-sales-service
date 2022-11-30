@@ -1,3 +1,4 @@
+
 """
 Django settings for Train_ticket_sales_service project.
 
@@ -11,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -18,10 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f%5y#mtechmoasjwn5h@0v&!6&my2cmbkgh^upj#b)rhnmv#@r'
-
+SECRET_KEY = config('SECRET_KEY')
 
 # Application definition
 

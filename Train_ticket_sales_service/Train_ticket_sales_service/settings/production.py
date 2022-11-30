@@ -21,14 +21,15 @@ PURCHASED_TICKETS_PDFS_PATH = os.path.join(MEDIA_ROOT, 'purchased_tickets', 'pdf
 
 EMAIL_HOST = 'mail.hosting.reg.ru'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'customerservice@trains.fithanso.ru'
-EMAIL_HOST_PASSWORD = 'scubastar123'
 EMAIL_USE_TLS = True
 
-PDF_GENERATION_MODE = 'celery'
+PDF_GENERATION_MODE = 'realtime'
 
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
+
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
