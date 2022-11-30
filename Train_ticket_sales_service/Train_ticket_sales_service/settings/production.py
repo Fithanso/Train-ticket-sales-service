@@ -25,4 +25,10 @@ EMAIL_HOST_USER = 'customerservice@trains.fithanso.ru'
 EMAIL_HOST_PASSWORD = 'scubastar123'
 EMAIL_USE_TLS = True
 
-PDF_GENERATION_MODE = 'realtime'
+PDF_GENERATION_MODE = 'celery'
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379

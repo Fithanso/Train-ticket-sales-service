@@ -5,6 +5,8 @@ import logging
 from django.db import transaction
 
 from train_main_app.models import Voyage, StationInVoyage
+from Train_ticket_sales_service.settings import local_fithanso as settings
+
 
 from .models import PurchasedTicket
 from . import utils
@@ -29,16 +31,7 @@ class TicketsPurchaseHandler:
             return self.status_code
 
         try:
-            with transaction.atomic():
-                utils.add_new_taken_seats_to_voyage(seat_numbers, voyage)
-
-                generate_and_send_tickets_task.delay(utils.simplify_ticket_data(db_ticket_data.copy()), seat_numbers,
-                                                     voyage.pk, self.data['customers_email'])
-
-                for seat in seat_numbers:
-                    db_ticket_data['seat_number'] = seat
-
-                    PurchasedTicket.objects.create(**db_ticket_data)
+            self.generate_tickets_and_send_email(seat_numbers, voyage, db_ticket_data.copy())
 
         except Exception as e:
             logger = logging.getLogger('django')
@@ -61,3 +54,30 @@ class TicketsPurchaseHandler:
         ticket_data['customers_timezone'] = self.data['customers_timezone']
 
         return ticket_data
+
+    def generate_tickets_and_send_email(self, seat_numbers, voyage, ticket_data):
+
+        with transaction.atomic():
+            utils.add_new_taken_seats_to_voyage(seat_numbers, voyage)
+
+            if settings.PDF_GENERATION_MODE == 'realtime':
+
+                pdfs = PDFGenerator.generate(ticket_data, seat_numbers)
+
+                es = EmailSender()
+                es.send_purchased_tickets(self.data['customers_email'], pdfs)
+
+                for seat in seat_numbers:
+                    pdf_data = pdfs[seat]
+                    ticket_data['seat_number'] = seat
+                    ticket_data['pdf_filename'] = pdf_data['filename']
+
+                    PurchasedTicket.objects.create(**ticket_data)
+
+            elif settings.PDF_GENERATION_MODE == 'async':
+                generate_and_send_tickets_task.delay(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers,
+                                                     voyage.pk, self.data['customers_email'])
+                for seat in seat_numbers:
+                    ticket_data['seat_number'] = seat
+
+                    PurchasedTicket.objects.create(**ticket_data)

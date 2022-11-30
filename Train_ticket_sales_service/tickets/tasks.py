@@ -2,8 +2,6 @@ from celery import shared_task
 import logging
 import time
 
-from Train_ticket_sales_service.settings import local_fithanso as settings
-
 from .classes import *
 from .models import PurchasedTicket
 

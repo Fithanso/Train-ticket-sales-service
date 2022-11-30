@@ -28,6 +28,8 @@ EMAIL_HOST_USER = 'customerservice@kujinatra.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 
+PDF_GENERATION_MODE = 'async'
+
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
