@@ -1,4 +1,4 @@
-<h1>Version: 1.0.0</h1>
+<h1>Version: 1.1.1</h1>
 
 This is the application where users can choose a train route based on country, departure, arrival cities and date.
 Hope you will find it worth your attention.
@@ -6,6 +6,8 @@ Hope you will find it worth your attention.
 Project was developed with Python 3.8 and Django 4.1
 
 You can find suitable voyage by choosing railway stations on the start page.
+
+<h3>To test the main feature, on the start page choose the following: Leningradskiy r.s. -> Moskovskiy r.s. at 31.08.2022.</h3>
 
 The application is built on the assumption that there are only two classes of seats: regular and business class. 
 And also that all wagons are the same.
