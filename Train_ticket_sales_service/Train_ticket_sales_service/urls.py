@@ -19,9 +19,6 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
-else:
-    urlpatterns += re_path(f'^{settings.MEDIA_URL.lstrip("/")}(?P<path>.*)$',
-                           mediaserve, {'document_root': '/static/'})
 
 handler404 = page_not_found
 handler500 = page_not_found

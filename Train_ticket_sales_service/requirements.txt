@@ -78,6 +78,7 @@ pyparsing==3.0.9
 pyphen==0.13.0
 pyquery==1.4.3
 PySocks==1.7.1
+python-decouple==3.6
 pytz==2022.2.1
 pywin32-ctypes==0.2.0
 ratelim==0.1.6
