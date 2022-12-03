@@ -62,7 +62,7 @@ class TicketsPurchaseHandler:
 
             if settings.PDF_GENERATION_MODE == 'realtime':
 
-                pdfs = PDFGenerator.generate(ticket_data, seat_numbers)
+                pdfs = PDFGenerator.generate(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers)
 
                 es = EmailSender()
                 es.send_purchased_tickets(self.data['customers_email'], pdfs)

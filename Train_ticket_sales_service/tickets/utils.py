@@ -67,6 +67,7 @@ def generate_ticket_pdfs(ticket_data, seat_numbers) -> dict:
 
 
 def get_ticket_pdf_name(ticket_data, seat_number):
+
     return '_'.join([
         str(ticket_data['voyage_pk']),
         str(ticket_data['customers_phone_number']),
