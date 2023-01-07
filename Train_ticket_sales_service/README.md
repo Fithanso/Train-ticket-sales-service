@@ -1,4 +1,4 @@
-<h1>Version: 1.1.1</h1>
+<h1>Version: 1.2.0</h1>
 
 This is the application where users can choose a train route based on country, departure, arrival cities and date.
 Hope you will find it worth your attention.
@@ -32,4 +32,28 @@ Warning! Application has one weakspot - if two users try to buy same tickets alm
 
 If you don't use any real SMTP server, don't forget to turn on the smtp debug:
 python -m smtpd -n -c DebuggingServer localhost:1025
+
+API GUIDE
+
+You need to be registered and logged into the system to get an API token.
+All models except SiteSetting are represented with all necessary CRUD operations that DRF provides:
+
+1. site_root/rest_api/voyages/
+2. site_root/rest_api/s_in_voyages/
+3. site_root/rest_api/stations/
+4. site_root/rest_api/cities/
+5. site_root/rest_api/countries/
+6. site_root/rest_api/trains/
+7. site_root/rest_api/purchased_tickets/
+
+
+Apart from that, there are two custom routes: 
+
+1. [GET] site_root/rest_api/voyages/search/<departure_station_id>/<arrival_station_id>/<departure_date (YYYY-MM-DD)>/
+2. [POST] site_root/rest_api/purchased_tickets/purchase/
+You need to pass following parameters (examples): 
+voyage_pk (3), departure_en_route_id (15), arrival_en_route_id (18), seat_numbers (125,126,127), customers_timezone (Europe/Moscow), customers_region_code (RU), customers_phone_number (9037930202), customers_email (example@mail.com).
+
+You can also filter PurchasedTickets by customers_phone_number field with a request like this:
+site_root/rest_api/purchased_tickets?customers_phonenumber=9037930202
 

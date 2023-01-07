@@ -11,8 +11,6 @@ class PurchaseTicketForm(forms.Form):
 
     seat_numbers = CharField(max_length=100, required=False, widget=HiddenInput())
     voyage_pk = CharField(max_length=100, required=False, widget=HiddenInput())
-    departure_station_slug = CharField(max_length=100, required=False, widget=HiddenInput())
-    arrival_station_slug = CharField(max_length=100, required=False, widget=HiddenInput())
     departure_en_route_id = CharField(max_length=100, required=False, widget=HiddenInput())
     arrival_en_route_id = CharField(max_length=100, required=False, widget=HiddenInput())
     customers_timezone = CharField(max_length=50, required=False, widget=HiddenInput())

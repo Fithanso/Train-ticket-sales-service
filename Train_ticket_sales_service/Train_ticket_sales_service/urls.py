@@ -1,7 +1,7 @@
 
-from django.conf.urls.static import static, serve as mediaserve
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 import debug_toolbar
 
 from .settings import local_fithanso as settings
@@ -12,7 +12,8 @@ urlpatterns = [
     path('', include('train_main_app.urls')),
     path('api/', include('site_api.urls')),
     path('tickets/', include('tickets.urls')),
-    path('search/', include('search.urls'))
+    path('search/', include('search.urls')),
+    path('rest_api/', include('rest_api.urls'))
 
 ]
 

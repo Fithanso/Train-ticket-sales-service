@@ -4,7 +4,7 @@ import logging
 
 from django.db import transaction
 
-from train_main_app.models import Voyage, StationInVoyage
+from train_main_app.models import Voyage, StationInVoyage, SiteSetting
 from Train_ticket_sales_service.settings import local_fithanso as settings
 
 
@@ -15,10 +15,13 @@ from .tasks import *
 
 class TicketsPurchaseHandler:
     def __init__(self, form_data):
-        self.data = form_data
+        self.data = form_data.dict()
         self.status_code = 'ok'
 
-    def process_purchase(self):
+    def process_purchase(self, forced_method=None):
+        if forced_method not in settings.PDF_GENERATION_MODES:
+            raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
+
         db_ticket_data = self.common_ticket_data()
         voyage = Voyage.objects.select_for_update().get(pk=self.data['voyage_pk'])
         db_ticket_data['voyage'] = voyage
@@ -31,7 +34,7 @@ class TicketsPurchaseHandler:
             return self.status_code
 
         try:
-            self.generate_tickets_and_send_email(seat_numbers, voyage, db_ticket_data.copy())
+            self.generate_tickets_and_send_email(seat_numbers, voyage, db_ticket_data.copy(), forced_method)
 
         except Exception as e:
             logger = logging.getLogger('django')
@@ -42,6 +45,11 @@ class TicketsPurchaseHandler:
 
     def common_ticket_data(self):
         ticket_data = {}
+
+        self.data['customers_phone_number'] = pn.PhoneNumber(
+            country_code=pn.country_code_for_region(self.data['customers_region_code']),
+            national_number=self.data['customers_phone_number']
+        )
         pn_object = self.data['customers_phone_number']
 
         ticket_data['customers_phone_number'] = pn_object.national_number
@@ -55,29 +63,49 @@ class TicketsPurchaseHandler:
 
         return ticket_data
 
-    def generate_tickets_and_send_email(self, seat_numbers, voyage, ticket_data):
+    def generate_tickets_and_send_email(
+            self, seat_numbers, voyage, ticket_data, forced_method) -> list[PurchasedTicket]:
 
         with transaction.atomic():
             utils.add_new_taken_seats_to_voyage(seat_numbers, voyage)
 
-            if settings.PDF_GENERATION_MODE == 'realtime':
+            pdf_generation_mode = SiteSetting.get_setting('pdf_generation_mode')
 
-                pdfs = PDFGenerator.generate(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers)
+            if 'realtime' in (pdf_generation_mode, forced_method):
+                created_tickets = self.generate_realtime(seat_numbers, ticket_data)
 
-                es = EmailSender()
-                es.send_purchased_tickets(self.data['customers_email'], pdfs)
+            elif 'async' in (pdf_generation_mode, forced_method):
+                created_tickets = self.generate_async(seat_numbers, voyage, ticket_data)
 
-                for seat in seat_numbers:
-                    pdf_data = pdfs[seat]
-                    ticket_data['seat_number'] = seat
-                    ticket_data['pdf_filename'] = pdf_data['filename']
+            return created_tickets
 
-                    PurchasedTicket.objects.create(**ticket_data)
+    def generate_realtime(self, seat_numbers, ticket_data):
 
-            elif settings.PDF_GENERATION_MODE == 'async':
-                generate_and_send_tickets_task.delay(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers,
-                                                     voyage.pk, self.data['customers_email'])
-                for seat in seat_numbers:
-                    ticket_data['seat_number'] = seat
+        created_tickets = []
+        pdfs = PDFGenerator.generate(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers)
 
-                    PurchasedTicket.objects.create(**ticket_data)
+        es = EmailSender()
+        es.send_purchased_tickets(self.data['customers_email'], pdfs)
+
+        for seat in seat_numbers:
+            pdf_data = pdfs[seat]
+            ticket_data['seat_number'] = seat
+            ticket_data['pdf_filename'] = pdf_data['filename']
+
+            new_ticket = PurchasedTicket.objects.create(**ticket_data)
+            created_tickets.append(new_ticket)
+
+        return created_tickets
+
+    def generate_async(self, seat_numbers, voyage, ticket_data):
+        created_tickets = []
+        generate_and_send_tickets_task.delay(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers,
+                                             voyage.pk, self.data['customers_email'])
+        for seat in seat_numbers:
+            ticket_data['seat_number'] = seat
+
+            new_ticket = PurchasedTicket.objects.create(**ticket_data)
+            created_tickets.append(new_ticket)
+
+        return created_tickets
+

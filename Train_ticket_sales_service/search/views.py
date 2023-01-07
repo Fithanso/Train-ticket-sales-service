@@ -134,8 +134,7 @@ class DetailedVoyageView(FormView, InvalidParametersRedirectMixin):
     def get_initial(self):
 
         timezone = get_tz_by_name(self.voyage.departure_city.name + ',' + self.voyage.departure_city.country.name)
-        initial = {'voyage_pk': self.voyage_id, 'departure_station_slug': self.departure_st.station.slug,
-                   'arrival_station_slug': self.arrival_st.station.slug, 'departure_en_route_id': self.departure_st.pk,
+        initial = {'voyage_pk': self.voyage_id, 'departure_en_route_id': self.departure_st.pk,
                    'arrival_en_route_id': self.arrival_st.pk, 'customers_timezone': timezone}
 
         return initial

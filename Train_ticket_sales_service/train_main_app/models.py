@@ -63,6 +63,7 @@ class Voyage(models.Model):
     def get_seats_prices(self, stations_to_go=1) -> dict:
         normal_seat_price = int(self.price_per_station) * stations_to_go
         bc_seat_price = int(self.bc_price_per_station) * stations_to_go
+
         return {'normal_seat_price': normal_seat_price, 'bc_seat_price': bc_seat_price}
 
     def get_taken_seats(self) -> list:
