@@ -36,6 +36,14 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 API GUIDE
 
 You need to be registered and logged into the system to get an API token.
+I use Djoser. 
+Use <br>
+site_root/rest_api/auth/users/ to create yourself a user, and standard routes: <br>
+site_root/rest_api/auth/token/login/ <br>
+and <br>
+site_root/rest_api/auth/token/logout/ <br>
+to log in and out of system.
+
 All models except SiteSetting are represented with all necessary CRUD operations that DRF provides:
 
 1. site_root/rest_api/voyages/
