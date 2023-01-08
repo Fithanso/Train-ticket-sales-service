@@ -1,4 +1,6 @@
 <h1>Version: 1.2.0</h1>
+As of January 2023 the system and its API is hosted on:
+<a href="https://trains.fithanso.ru/">trains.fithanso.ru</a> 
 
 This is the application where users can choose a train route based on country, departure, arrival cities and date.
 Hope you will find it worth your attention.
@@ -33,7 +35,7 @@ Warning! Application has one weakspot - if two users try to buy same tickets alm
 If you don't use any real SMTP server, don't forget to turn on the smtp debug:
 python -m smtpd -n -c DebuggingServer localhost:1025
 
-API GUIDE
+<h2>API GUIDE</h2>
 
 You need to be registered and logged into the system to get an API token.
 I use Djoser. 
