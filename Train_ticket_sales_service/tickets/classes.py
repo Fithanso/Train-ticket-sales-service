@@ -1,7 +1,7 @@
 
 from django.core.mail import EmailMessage
 
-from Train_ticket_sales_service.settings import local_fithanso as settings
+from Train_ticket_sales_service.settings import production as settings
 
 from . import utils
 from .tasks import *

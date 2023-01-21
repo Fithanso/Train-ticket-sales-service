@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 
-from .settings import local_fithanso as settings
+from .settings import production as settings
 from .error_handlers import *
 
 urlpatterns = [
