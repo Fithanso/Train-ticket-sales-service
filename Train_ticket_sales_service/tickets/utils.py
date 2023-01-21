@@ -84,6 +84,7 @@ def simplify_ticket_data(ticket_data):
     ticket_data['departure_station_name'] = ticket_data['departure_station'].station.name
     ticket_data['departure_datetime'] = ticket_data['departure_station'].arrival_datetime
     del ticket_data['departure_station']
+
     ticket_data['arrival_station_name'] = ticket_data['arrival_station'].station.name
     ticket_data['arrival_datetime'] = ticket_data['arrival_station'].arrival_datetime
     del ticket_data['arrival_station']

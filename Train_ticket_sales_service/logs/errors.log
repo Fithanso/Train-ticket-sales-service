@@ -1407,3 +1407,498 @@ Traceback (most recent call last):
     return (renderers[0], renderers[0].media_type)
 IndexError: list index out of range
 ERROR 2023-01-07 13:55:17,915 basehttp 68396 97792 "GET /rest_api/purchased_tickets/?limit=10&offset=10 HTTP/1.1" 500 112307
+ERROR 2023-01-14 00:13:00,664 log 34084 34120 Internal Server Error: /search/voyages/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 27, in get
+    print(type(reverse('list_voyages')))
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'list_voyages' not found. 'list_voyages' is not a valid view function or pattern name.
+ERROR 2023-01-14 00:13:01,160 basehttp 34084 34120 "GET /search/voyages/?departure_station=leningradskiy-railway-station-1&arrival_station=moskovskiy-railway-station-2&departure_date=2022-08-31&country=russia HTTP/1.1" 500 105261
+ERROR 2023-01-14 19:33:19,591 log 40644 41520 Internal Server Error: /search/voyages/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 35, in get
+    data = json_serializer.serialize(Voyage.objects.all(), stream='out')
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\serializers\base.py", line 130, in serialize
+    self.start_serialization()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\serializers\json.py", line 36, in start_serialization
+    self.stream.write("[")
+AttributeError: 'str' object has no attribute 'write'
+ERROR 2023-01-14 19:33:20,047 basehttp 40644 41520 "GET /search/voyages/?departure_station=leningradskiy-railway-station-1&arrival_station=moskovskiy-railway-station-2&departure_date=2022-08-31&country=russia HTTP/1.1" 500 105483
+ERROR 2023-01-14 19:39:41,629 log 34340 42224 Internal Server Error: /search/voyages/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 36, in get
+    data = json_serializer.serialize(SiteSetting.objects.all(), stream=out)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\serializers\base.py", line 168, in serialize
+    self.end_object(obj)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\serializers\json.py", line 54, in end_object
+    json.dump(self.get_dump_object(obj), self.stream, **self.json_kwargs)
+  File "C:\Users\Matvey\AppData\Local\Programs\Python\Python310\lib\json\__init__.py", line 180, in dump
+    fp.write(chunk)
+  File "C:\Users\Matvey\AppData\Local\Programs\Python\Python310\lib\encodings\cp1251.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u20bd' in position 1: character maps to <undefined>
+ERROR 2023-01-14 19:39:42,127 basehttp 34340 42224 "GET /search/voyages/?departure_station=leningradskiy-railway-station-1&arrival_station=moskovskiy-railway-station-2&departure_date=2022-08-31&country=russia HTTP/1.1" 500 117157
+ERROR 2023-01-16 00:29:12,697 log 34516 39604 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'departure_en_route'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 77, in dispatch
+    self.populate_attributes_with_voyage_info()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 130, in populate_attributes_with_voyage_info
+    StationInVoyage.objects.filter(pk=self.request.GET['departure_en_route']).select_related('station')[0]
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'departure_en_route'
+ERROR 2023-01-16 00:29:13,137 basehttp 34516 39604 "GET /search/voyages/3/ HTTP/1.1" 500 99953
+ERROR 2023-01-16 00:30:12,919 log 34516 39604 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'arrival_en_route'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 77, in dispatch
+    self.populate_attributes_with_voyage_info()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 133, in populate_attributes_with_voyage_info
+    StationInVoyage.objects.filter(pk=self.request.GET['arrival_en_route']).select_related('station')[0]
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'arrival_en_route'
+ERROR 2023-01-16 00:30:13,324 basehttp 34516 39604 "GET /search/voyages/3/?departure_en_route=15 HTTP/1.1" 500 100785
+ERROR 2023-01-17 22:48:54,286 log 7540 16772 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 85, in form_valid
+    purchase_handler = TicketsPurchaseHandler(form.cleaned_data)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 18, in __init__
+    self.data = form_data.dict()
+AttributeError: 'dict' object has no attribute 'dict'
+ERROR 2023-01-17 22:48:54,776 basehttp 7540 16772 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 108857
+ERROR 2023-01-17 22:50:20,343 log 38532 43768 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 85, in form_valid
+    purchase_handler = TicketsPurchaseHandler(form.cleaned_data)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 19, in __init__
+    self.data = form_data.dict()
+AttributeError: 'dict' object has no attribute 'dict'
+ERROR 2023-01-17 22:50:20,864 basehttp 38532 43768 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 108846
+ERROR 2023-01-17 22:53:08,623 log 7516 40352 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 86, in form_valid
+    purchase_status = purchase_handler.process_purchase()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 24, in process_purchase
+    raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
+AttributeError: Invalid generation method specified. Check PDF_GENERATION_MODES setting.
+ERROR 2023-01-17 22:53:09,179 basehttp 7516 40352 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 108959
+ERROR 2023-01-17 22:55:30,086 log 6180 45636 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 86, in form_valid
+    purchase_status = purchase_handler.process_purchase()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 24, in process_purchase
+    raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
+AttributeError: Invalid generation method specified. Check PDF_GENERATION_MODES setting.
+ERROR 2023-01-17 22:55:30,773 basehttp 6180 45636 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 108959
+ERROR 2023-01-17 22:55:35,533 log 6180 45636 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 86, in form_valid
+    purchase_status = purchase_handler.process_purchase()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 24, in process_purchase
+    raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
+AttributeError: Invalid generation method specified. Check PDF_GENERATION_MODES setting.
+ERROR 2023-01-17 22:55:35,951 basehttp 6180 45636 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 108959
+ERROR 2023-01-17 22:56:17,601 log 47780 52288 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 86, in form_valid
+    purchase_status = purchase_handler.process_purchase()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 27, in process_purchase
+    db_ticket_data = self.common_ticket_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\purchase_handler.py", line 52, in common_ticket_data
+    country_code=pn.country_code_for_region(self.data['customers_region_code']),
+KeyError: 'customers_region_code'
+ERROR 2023-01-17 22:56:18,152 basehttp 47780 52288 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 112705
+ERROR 2023-01-17 22:58:54,254 purchase_handler 34000 29872 local variable 'created_tickets' referenced before assignment
+ERROR 2023-01-17 23:00:05,257 purchase_handler 34000 29872 local variable 'created_tickets' referenced before assignment
+ERROR 2023-01-17 23:01:34,553 purchase_handler 52988 23476 local variable 'created_tickets' referenced before assignment
+ERROR 2023-01-17 23:02:38,253 purchase_handler 28692 51448 local variable 'created_tickets' referenced before assignment
+ERROR 2023-01-17 23:03:25,877 purchase_handler 22768 28124 name 'PDFGenerator' is not defined
+ERROR 2023-01-17 23:04:12,949 purchase_handler 37088 26808 name 'PDFGenerator' is not defined
+ERROR 2023-01-17 23:05:45,619 purchase_handler 51316 44844 name 'EmailSender' is not defined
+ERROR 2023-01-18 00:08:32,394 log 53024 51164 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 43, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 57, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2921, in parse
+    raise NumberParseException(NumberParseException.NOT_A_NUMBER,
+phonenumbers.phonenumberutil.NumberParseException: (1) The string supplied did not seem to be a phone number.
+ERROR 2023-01-18 00:08:32,887 basehttp 53024 51164 "GET /tickets/?customers_phone_number_0=RU&customers_phone_number_1=asdasdasd HTTP/1.1" 500 112147
+ERROR 2023-01-18 00:10:25,621 log 53024 51164 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 43, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 57, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:10:26,096 basehttp 53024 51164 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=9037930201 HTTP/1.1" 500 112111
+ERROR 2023-01-18 00:11:00,952 log 53024 51164 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 43, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 57, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:11:01,549 basehttp 53024 51164 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=9037930201 HTTP/1.1" 500 112111
+ERROR 2023-01-18 00:11:25,817 log 53024 51164 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 43, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 57, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2921, in parse
+    raise NumberParseException(NumberParseException.NOT_A_NUMBER,
+phonenumbers.phonenumberutil.NumberParseException: (1) The string supplied did not seem to be a phone number.
+ERROR 2023-01-18 00:11:26,298 basehttp 53024 51164 "GET /tickets/?customers_phone_number_0=RU&customers_phone_number_1=79037930201!asd HTTP/1.1" 500 112235
+ERROR 2023-01-18 00:15:26,466 log 28872 42936 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 47, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 61, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2921, in parse
+    raise NumberParseException(NumberParseException.NOT_A_NUMBER,
+phonenumbers.phonenumberutil.NumberParseException: (1) The string supplied did not seem to be a phone number.
+ERROR 2023-01-18 00:15:26,973 basehttp 28872 42936 "GET /tickets/?customers_phone_number_0=RU&customers_phone_number_1=asdasdas HTTP/1.1" 500 112108
+ERROR 2023-01-18 00:16:27,510 log 34812 50280 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 35, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 47, in get_context_data
+    context['tickets'] = self.search_tickets()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 61, in search_tickets
+    national_number = pn.parse(self.request.GET['customers_phone_number_1'], region_code).national_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:16:28,124 basehttp 34812 50280 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=123123123213 HTTP/1.1" 500 112133
+ERROR 2023-01-18 00:17:25,210 log 33696 8060 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 34, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 47, in get_context_data
+    context['full_number'] = self.get_full_number()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 53, in get_full_number
+    pn_obj = pn.parse(self.request.GET['customers_phone_number_1'], region_code)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:17:25,761 basehttp 33696 8060 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=123123123213 HTTP/1.1" 500 111856
+ERROR 2023-01-18 00:17:44,454 log 33696 8060 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 34, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 47, in get_context_data
+    context['full_number'] = self.get_full_number()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 53, in get_full_number
+    pn_obj = pn.parse(self.request.GET['customers_phone_number_1'], region_code)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:17:44,987 basehttp 33696 8060 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=123123123213 HTTP/1.1" 500 111718
+ERROR 2023-01-18 00:18:53,426 log 33696 8060 Internal Server Error: /tickets/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 34, in get
+    return super(SearchPurchasedTicketsView, self).get(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\list.py", line 174, in get
+    context = self.get_context_data()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 47, in get_context_data
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\views.py", line 53, in get_full_number
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\phonenumbers\phonenumberutil.py", line 2927, in parse
+    raise NumberParseException(NumberParseException.INVALID_COUNTRY_CODE,
+phonenumbers.phonenumberutil.NumberParseException: (0) Missing or invalid default region.
+ERROR 2023-01-18 00:18:53,862 basehttp 33696 8060 "GET /tickets/?customers_phone_number_0=ZZ&customers_phone_number_1=123123123213 HTTP/1.1" 500 106528
+ERROR 2023-01-20 17:20:58,413 purchase_handler 25748 26060 [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение
+ERROR 2023-01-20 17:30:11,449 log 20788 26404 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 152, in post
+    if form.is_valid():
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 205, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 200, in errors
+    self.full_clean()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 438, in full_clean
+    self._clean_form()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 459, in _clean_form
+    cleaned_data = self.clean()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\forms.py", line 21, in clean
+    self.validate_seat_numbers()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\forms.py", line 26, in validate_seat_numbers
+    print(tyype(self.cleaned_data['customers_phone_number']))
+NameError: name 'tyype' is not defined
+ERROR 2023-01-20 17:30:11,959 basehttp 20788 26404 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 123073
+ERROR 2023-01-20 17:32:04,073 log 27080 11744 Internal Server Error: /search/voyages/3/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 84, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'customers_phone_number'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\search\views.py", line 82, in dispatch
+    return super(DetailedVoyageView, self).dispatch(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\views\generic\edit.py", line 152, in post
+    if form.is_valid():
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 205, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 200, in errors
+    self.full_clean()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 438, in full_clean
+    self._clean_form()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\forms\forms.py", line 459, in _clean_form
+    cleaned_data = self.clean()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\forms.py", line 21, in clean
+    self.validate_seat_numbers()
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\Train_ticket_sales_service\tickets\forms.py", line 26, in validate_seat_numbers
+    print(type(self.data['customers_phone_number']))
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\utils\datastructures.py", line 86, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'customers_phone_number'
+ERROR 2023-01-20 17:32:04,658 basehttp 27080 11744 "POST /search/voyages/3/?departure_en_route=15&arrival_en_route=18 HTTP/1.1" 500 132326
