@@ -11,15 +11,18 @@ from Train_ticket_sales_service.settings import local_fithanso as settings
 from .models import PurchasedTicket
 from . import utils
 from .tasks import *
+from .classes import PDFGenerator, EmailSender
 
 
 class TicketsPurchaseHandler:
     def __init__(self, form_data):
-        self.data = form_data.dict()
+
+        self.data = form_data
         self.status_code = 'ok'
 
     def process_purchase(self, forced_method=None):
-        if forced_method not in settings.PDF_GENERATION_MODES:
+
+        if forced_method and forced_method not in settings.PDF_GENERATION_MODES:
             raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
 
         db_ticket_data = self.common_ticket_data()
@@ -46,10 +49,12 @@ class TicketsPurchaseHandler:
     def common_ticket_data(self):
         ticket_data = {}
 
-        self.data['customers_phone_number'] = pn.PhoneNumber(
-            country_code=pn.country_code_for_region(self.data['customers_region_code']),
-            national_number=self.data['customers_phone_number']
-        )
+        if not self.data['customers_phone_number'] or \
+                not isinstance(self.data['customers_phone_number'], pn.PhoneNumber):
+            self.data['customers_phone_number'] = pn.PhoneNumber(
+                country_code=pn.country_code_for_region(self.data['customers_region_code']),
+                national_number=self.data['customers_phone_number']
+            )
         pn_object = self.data['customers_phone_number']
 
         ticket_data['customers_phone_number'] = pn_object.national_number
@@ -69,7 +74,7 @@ class TicketsPurchaseHandler:
         with transaction.atomic():
             utils.add_new_taken_seats_to_voyage(seat_numbers, voyage)
 
-            pdf_generation_mode = SiteSetting.get_setting('pdf_generation_mode')
+            pdf_generation_mode = SiteSetting.get_setting('pdf_generation_mode').value
 
             if 'realtime' in (pdf_generation_mode, forced_method):
                 created_tickets = self.generate_realtime(seat_numbers, ticket_data)
@@ -82,6 +87,7 @@ class TicketsPurchaseHandler:
     def generate_realtime(self, seat_numbers, ticket_data):
 
         created_tickets = []
+
         pdfs = PDFGenerator.generate(utils.simplify_ticket_data(ticket_data.copy()), seat_numbers)
 
         es = EmailSender()

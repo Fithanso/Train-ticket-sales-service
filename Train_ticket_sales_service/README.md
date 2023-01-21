@@ -1,4 +1,4 @@
-<h1>Version: 1.2.0</h1>
+<h1>Version: 1.2.1</h1>
 As of January 2023 the system and its API is hosted on:
 <a href="https://trains.fithanso.ru/">trains.fithanso.ru</a> 
 

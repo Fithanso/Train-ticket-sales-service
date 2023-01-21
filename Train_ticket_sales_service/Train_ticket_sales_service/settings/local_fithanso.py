@@ -30,9 +30,10 @@ EMAIL_USE_TLS = False
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
-
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 MEDIA_URL = 'https://storage.yandexcloud.net/trains-media-bucket/'
+
+PDF_GENERATION_MODES = ['realtime', 'async']
 

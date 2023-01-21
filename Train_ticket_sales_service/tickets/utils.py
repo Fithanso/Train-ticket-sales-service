@@ -76,6 +76,7 @@ def get_ticket_pdf_name(ticket_data, seat_number):
 
 
 def simplify_ticket_data(ticket_data):
+    """Remove all model objects, leave only necessary data"""
     ticket_data['voyage_info'] = str(ticket_data['voyage'])
     ticket_data['voyage_pk'] = ticket_data['voyage'].pk
     del ticket_data['voyage']

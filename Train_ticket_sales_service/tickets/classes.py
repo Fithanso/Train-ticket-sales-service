@@ -35,3 +35,10 @@ class PDFGenerator:
     def generate(ticket_data, seat_numbers):
         return utils.generate_ticket_pdfs(ticket_data, seat_numbers)
 
+
+class TicketDisplayObject:
+
+    def __init__(self, **kwargs):
+        for arg in kwargs:
+            setattr(self, arg, kwargs[arg])
+

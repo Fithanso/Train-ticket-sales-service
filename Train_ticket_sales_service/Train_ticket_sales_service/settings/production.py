@@ -33,3 +33,5 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 MEDIA_URL = 'https://storage.yandexcloud.net/trains-media-bucket/'
+
+PDF_GENERATION_MODES = ['realtime', 'async']

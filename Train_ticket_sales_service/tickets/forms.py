@@ -23,6 +23,7 @@ class PurchaseTicketForm(forms.Form):
         return self.cleaned_data
 
     def validate_seat_numbers(self):
+        # print(type(self.cleaned_data['customers_phone_number']))
         voyage = Voyage.objects.get(pk=self.cleaned_data['voyage_pk'])
         seat_numbers = self.cleaned_data['seat_numbers']
 

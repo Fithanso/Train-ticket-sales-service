@@ -7,13 +7,12 @@ import phonenumbers as pn
 
 from Train_ticket_sales_service.settings import local_fithanso as settings
 
-
 from train_main_app.validators.params_validators import KeysExistValidator
 from train_main_app.mixins import InvalidParametersRedirectMixin
 
 from .models import PurchasedTicket
 from .constants import *
-from .display_objects import TicketDisplayObject
+from .classes import TicketDisplayObject
 from . import utils
 
 
@@ -40,8 +39,12 @@ class SearchPurchasedTicketsView(ListView, InvalidParametersRedirectMixin):
 
     def get_context_data(self, **kwargs):
         context = super(SearchPurchasedTicketsView, self).get_context_data(**kwargs)
-        context['tickets'] = self.search_tickets()
-        context['full_number'] = self.get_full_number()
+        try:
+            context['tickets'] = self.search_tickets()
+            context['full_number'] = self.get_full_number()
+        except:
+            context['tickets'] = []
+            context['full_number'] = 'wrong number'
 
         return context
 

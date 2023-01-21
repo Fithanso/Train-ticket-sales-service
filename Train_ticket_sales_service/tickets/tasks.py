@@ -1,6 +1,5 @@
 from celery import shared_task
 import logging
-import time
 
 from .classes import *
 from .models import PurchasedTicket
@@ -9,7 +8,6 @@ from .models import PurchasedTicket
 @shared_task
 def generate_and_send_tickets_task(ticket_data, seat_numbers, voyage_pk, customers_email):
     try:
-        time.sleep(5)
         pdfs = PDFGenerator.generate(ticket_data, seat_numbers)
 
         for seat in seat_numbers:

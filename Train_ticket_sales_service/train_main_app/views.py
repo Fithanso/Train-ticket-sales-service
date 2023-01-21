@@ -65,8 +65,7 @@ class IndexFilterView(TemplateView, InvalidParametersRedirectMixin):
 
         stations = self.get_stations_by_country()
 
-        initial_values = {'departure_station': stations, 'arrival_station': stations,
-                          'country': self.kwargs['country_slug']}
+        initial_values = {'departure_station': stations, 'arrival_station': stations}
 
         return initial_values
 

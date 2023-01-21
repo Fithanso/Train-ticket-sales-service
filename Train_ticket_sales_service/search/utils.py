@@ -1,3 +1,4 @@
+import json
 
 from train_main_app.functions import split_into_chunks, create_get_parameters
 
@@ -6,6 +7,7 @@ from .constants import SEATS_IN_ROW_IN_WAGONSCHEME
 
 
 def divide_into_rows_for_display(seats_by_wagons) -> dict:
+
     # seats should be divided into rows according to the number specified in the constant
     for wagon_name, wagon_info in seats_by_wagons.items():
         wagon_info['seat_numbers'] = split_into_chunks(wagon_info['seat_numbers'], SEATS_IN_ROW_IN_WAGONSCHEME)

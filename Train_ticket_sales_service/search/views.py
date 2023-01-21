@@ -24,6 +24,7 @@ class ListVoyagesView(ListView, InvalidParametersRedirectMixin):
 
     def get(self, request, *args, **kwargs):
         val_result = self.validate_parameters()
+
         if val_result:
             return val_result
 
@@ -49,7 +50,7 @@ class ListVoyagesView(ListView, InvalidParametersRedirectMixin):
         context_data = super(ListVoyagesView, self).get_context_data(**kwargs)
 
         finder = VoyageFinder(self.request.GET)
-        context_data['voyages'] = finder.find_suitable_voyages()
+        context_data[self.context_object_name] = finder.find_suitable_voyages()
 
         if context_data[self.context_object_name]:
             context_data['departure_city'] = Station.objects.get(slug=self.request.GET['departure_station']).city
@@ -71,6 +72,9 @@ class DetailedVoyageView(FormView, InvalidParametersRedirectMixin):
     form_data = None
 
     def dispatch(self, request, *args, **kwargs):
+        val_result = self.validate_parameters()
+        if val_result:
+            return val_result
 
         # data that is used in multiple methods goes to attributes
         self.populate_attributes_with_voyage_info()
@@ -88,9 +92,6 @@ class DetailedVoyageView(FormView, InvalidParametersRedirectMixin):
         return super(DetailedVoyageView, self).form_valid(form)
 
     def get(self, request, *args, **kwargs):
-        val_result = self.validate_parameters()
-        if val_result:
-            return val_result
 
         return super(DetailedVoyageView, self).get(request, *args, **kwargs)
 

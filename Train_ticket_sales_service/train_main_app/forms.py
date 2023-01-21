@@ -12,9 +12,7 @@ class VoyagesFilterForm(forms.Form):
         if 'initial' in kwargs:
             self.fields['departure_station'].queryset = kwargs['initial']['departure_station']
             self.fields['arrival_station'].queryset = kwargs['initial']['arrival_station']
-            self.fields['country'].initial = kwargs['initial']['country']
 
-    country = CharField(max_length=50, widget=HiddenInput())
     departure_station = ModelChoiceField(queryset=Station.objects.none(), to_field_name='slug',
                                          label='Departure station')
     arrival_station = ModelChoiceField(queryset=Station.objects.none(), to_field_name='slug', label='Arrival station')

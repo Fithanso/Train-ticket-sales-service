@@ -1,3 +1,5 @@
+import json
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
@@ -35,7 +37,7 @@ class Voyage(models.Model):
         return self.departure_station.name + ' - ' + self.arrival_station.name + ' at ' + str(self.departure_datetime)
 
     def get_absolute_url(self):
-        return reverse('search:view_voyage', kwargs={'voyage_id': self.pk})
+        return reverse('search:detailed_voyage', kwargs={'voyage_id': self.pk})
 
     def for_display(self, departure_st_slug, arrival_st_slug):
         stations_en_route, departure_en_route, arrival_en_route = \

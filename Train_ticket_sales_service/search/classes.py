@@ -15,7 +15,6 @@ class VoyageFinder:
         self.departure_date = data['departure_date']
         self.departure_slug = data['departure_station']
         self.arrival_slug = data['arrival_station']
-        self.stations_to_go = 0
 
     def find_suitable_voyages(self) -> list:
         suitable_voyages = []
@@ -33,8 +32,8 @@ class VoyageFinder:
                 if departure_en_route.station_order < arrival_en_route.station_order:
 
                     # create displaying object of a suitable voyage
-                    self.stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
-                    seat_prices = voyage.get_seats_prices(self.stations_to_go)
+                    stations_to_go = arrival_en_route.station_order - departure_en_route.station_order
+                    seat_prices = voyage.get_seats_prices(stations_to_go)
 
                     voyage_link = utils.link_to_detailed_voyage(voyage, departure_en_route, arrival_en_route)
 
