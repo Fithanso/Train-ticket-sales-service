@@ -81,9 +81,10 @@ class PurchasedTicketViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         purchase_handler = TicketsPurchaseHandler(request.data)
-        created_tickets = purchase_handler.process_purchase(forced_method='realtime')
-        if created_tickets == 'error':
-            return Response('Error occurred while purchasing. Maybe requested seats are already taken.', status=406)
-        elif created_tickets == 'ok':
-            return Response('Ok', status=200)
+        result = purchase_handler.process_purchase(forced_method='realtime')
+        if result['status'] == 'error':
+            return Response({'status': 'Error occurred while purchasing. Maybe requested seats are already taken.',
+                             'ticket_ids': ''}, status=406)
+        elif result['status'] == 'ok':
+            return Response({'status': 'Ok', 'ticket_ids': json.dumps(result['ticket_ids'])}, status=200)
 

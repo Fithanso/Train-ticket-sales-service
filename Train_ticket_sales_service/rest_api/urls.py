@@ -14,6 +14,8 @@ router.register(r'countries', CountryViewSet)
 router.register(r'trains', TrainViewSet)
 router.register(r'purchased_tickets', PurchasedTicketViewSet, basename='purchased_tickets')
 
+app_name = 'rest_api'
+
 urlpatterns = [
     path('', include(router.urls)),
     re_path(r'^auth/', include('djoser.urls')),

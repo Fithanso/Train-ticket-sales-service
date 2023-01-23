@@ -38,7 +38,9 @@ class TestPurchase(TestCase):
 
         ph = TicketsPurchaseHandler(ticket_data.copy())
         result = ph.process_purchase(forced_method='realtime')
-        self.assertEquals(result, 'ok')
+
+        self.assertEquals(result['status'], 'ok')
+        self.assertEquals(result['ticket_ids'], [115, 116])
 
         p_tickets = list(PurchasedTicket.objects.all())
         self.assertEquals(len(p_tickets), 4)
@@ -78,7 +80,9 @@ class TestPurchase(TestCase):
 
         ph = TicketsPurchaseHandler(ticket_data.copy())
         result = ph.process_purchase(forced_method='async')
-        self.assertEquals(result, 'ok')
+
+        self.assertEquals(result['status'], 'ok')
+        self.assertEquals(result['ticket_ids'], [115, 116])
 
         p_tickets = list(PurchasedTicket.objects.all())
         self.assertEquals(len(p_tickets), 4)
@@ -119,7 +123,10 @@ class TestPurchase(TestCase):
 
         ph = TicketsPurchaseHandler(ticket_data.copy())
         result = ph.process_purchase(forced_method='realtime')
-        self.assertEquals(result, 'error')
+
+        self.assertEquals(result['status'], 'error')
+        self.assertEquals(result['ticket_ids'], [])
+
         p_tickets = list(PurchasedTicket.objects.all())
         self.assertEquals(len(p_tickets), 2)
 

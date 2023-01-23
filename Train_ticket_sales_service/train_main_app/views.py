@@ -28,6 +28,7 @@ class IndexFilterView(TemplateView, InvalidParametersRedirectMixin):
     country = None
 
     def get(self, request, *args, **kwargs):
+
         val_result = self.validate_parameters()
         if val_result:
             return val_result

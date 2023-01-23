@@ -17,13 +17,15 @@ from .classes import PDFGenerator, EmailSender
 class TicketsPurchaseHandler:
     def __init__(self, form_data):
 
-        self.data = form_data
+        self.data = dict(form_data)
         self.status_code = 'ok'
 
-    def process_purchase(self, forced_method=None):
+    def process_purchase(self, forced_method=None) -> dict:
 
         if forced_method and forced_method not in settings.PDF_GENERATION_MODES:
             raise AttributeError('Invalid generation method specified. Check PDF_GENERATION_MODES setting.')
+
+        result = {}
 
         db_ticket_data = self.common_ticket_data()
         voyage = Voyage.objects.select_for_update().get(pk=self.data['voyage_pk'])
@@ -31,20 +33,25 @@ class TicketsPurchaseHandler:
 
         seat_numbers = tuple(self.data['seat_numbers'].split(','))
 
-        seats_taken = utils.check_taken_seats(seat_numbers, voyage)
-        if seats_taken:
-            self.status_code = 'error'
-            return self.status_code
-
         try:
-            self.generate_tickets_and_send_email(seat_numbers, voyage, db_ticket_data.copy(), forced_method)
+            seats_taken = utils.check_taken_seats(seat_numbers, voyage)
+            if seats_taken:
+                raise Exception('Seats already taken: '+','.join(seats_taken))
+
+            tickets = self.generate_tickets_and_send_email(seat_numbers, voyage, db_ticket_data.copy(), forced_method)
 
         except Exception as e:
             logger = logging.getLogger('django')
             logger.error(e)
             self.status_code = 'error'
+            result['status'] = self.status_code
+            result['ticket_ids'] = []
+            return result
 
-        return self.status_code
+        result['status'] = self.status_code
+        result['ticket_ids'] = [ticket.pk for ticket in tickets]
+
+        return result
 
     def common_ticket_data(self):
         ticket_data = {}

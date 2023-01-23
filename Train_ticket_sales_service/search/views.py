@@ -83,9 +83,9 @@ class DetailedVoyageView(FormView, InvalidParametersRedirectMixin):
 
     def form_valid(self, form):
         purchase_handler = TicketsPurchaseHandler(form.cleaned_data)
-        purchase_status = purchase_handler.process_purchase()
+        purchase_result = purchase_handler.process_purchase()
 
-        if purchase_status == 'error':
+        if purchase_result['status'] == 'error':
             messages.add_message(self.request, messages.ERROR, PURCHASE_ERROR_MESSAGE)
             return HttpResponseRedirect(self.request.META['HTTP_REFERER'])
 

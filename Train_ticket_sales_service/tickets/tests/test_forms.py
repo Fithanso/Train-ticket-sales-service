@@ -34,6 +34,8 @@ class TestForms(TestCase):
             'customers_email': 'examplemail.com'
         })
         self.assertFalse(form.is_valid())
+        self.assertTrue('Requested seats are already taken: 11, 10' in form.errors.as_ul() or
+                        'Requested seats are already taken: 10, 11' in form.errors.as_ul())
         self.assertTrue(len(form.errors), 3)
         self.assertEquals(list(form.errors.keys()), ['customers_phone_number', 'customers_email', 'seat_numbers'])
 
