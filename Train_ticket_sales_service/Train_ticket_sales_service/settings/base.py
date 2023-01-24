@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'train_main_app',
     'tickets',
-    'site_api',
     'search',
     'rest_api',
     'fontawesomefree',

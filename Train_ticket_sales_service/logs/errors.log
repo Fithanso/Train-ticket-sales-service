@@ -1,0 +1,20 @@
+ERROR 2023-01-24 12:19:10,521 log 40628 49100 Internal Server Error: /rest_api/get_time_by_address/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\rest_framework\decorators.py", line 39, in decorator
+    assert not(isinstance(http_method_names, types.FunctionType)), \
+AssertionError: @api_view missing list of allowed HTTP methods
+ERROR 2023-01-24 12:19:10,903 basehttp 40628 49100 "POST /rest_api/get_time_by_address/ HTTP/1.1" 500 84089
+ERROR 2023-01-24 12:20:11,310 log 40628 49100 Internal Server Error: /rest_api/get_time_by_address/
+Traceback (most recent call last):
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Matvey\PycharmProjects\Akhenaton\venv\lib\site-packages\rest_framework\decorators.py", line 39, in decorator
+    assert not(isinstance(http_method_names, types.FunctionType)), \
+AssertionError: @api_view missing list of allowed HTTP methods
+ERROR 2023-01-24 12:20:11,677 basehttp 40628 49100 "POST /rest_api/get_time_by_address/ HTTP/1.1" 500 84076

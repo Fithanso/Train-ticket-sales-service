@@ -7,7 +7,7 @@ $(document).ready(function () {
 
   $.ajax({
     type: 'POST',
-    url: '/api/get_time_by_address/',
+    url: '/rest_api/get_time_by_address/',
     data:  {
         'csrfmiddlewaretoken': csrf_token,
         'address': tz

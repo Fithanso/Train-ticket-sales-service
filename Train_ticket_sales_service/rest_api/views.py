@@ -1,14 +1,22 @@
 from rest_framework import generics, viewsets
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
 from search.classes import VoyageFinder
 from tickets.purchase_handler import TicketsPurchaseHandler
 from train_main_app.models import Voyage, StationInVoyage, Station, City
 from tickets.models import PurchasedTicket
+from train_main_app.functions import get_time_by_address
 
 from .serializers import *
+
+
+@api_view(http_method_names=['POST'])
+@permission_classes([AllowAny])
+def time_by_address(request):
+    return Response(get_time_by_address(request.POST['address']))
 
 
 class VoyageViewSet(viewsets.ModelViewSet):

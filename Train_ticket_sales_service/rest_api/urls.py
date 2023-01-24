@@ -20,4 +20,7 @@ urlpatterns = [
     path('', include(router.urls)),
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
+    path('get_time_by_address/', time_by_address, name='time_by_address')
+
 ]
+

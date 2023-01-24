@@ -10,7 +10,6 @@ from .error_handlers import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('train_main_app.urls')),
-    path('api/', include('site_api.urls')),
     path('tickets/', include('tickets.urls')),
     path('search/', include('search.urls')),
     path('rest_api/', include('rest_api.urls'))
