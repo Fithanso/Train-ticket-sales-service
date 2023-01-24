@@ -12,7 +12,7 @@ urlpatterns = [
     path('', include('train_main_app.urls')),
     path('tickets/', include('tickets.urls')),
     path('search/', include('search.urls')),
-    path('rest_api/', include('rest_api.urls'))
+    path('api/', include('site_api.urls'))
 
 ]
 

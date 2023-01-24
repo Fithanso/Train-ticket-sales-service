@@ -14,7 +14,7 @@ router.register(r'countries', CountryViewSet)
 router.register(r'trains', TrainViewSet)
 router.register(r'purchased_tickets', PurchasedTicketViewSet, basename='purchased_tickets')
 
-app_name = 'rest_api'
+app_name = 'site_api'
 
 urlpatterns = [
     path('', include(router.urls)),

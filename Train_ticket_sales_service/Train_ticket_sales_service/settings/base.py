@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'train_main_app',
     'tickets',
     'search',
-    'rest_api',
+    'site_api',
     'fontawesomefree',
     'rest_framework',
     'djoser',

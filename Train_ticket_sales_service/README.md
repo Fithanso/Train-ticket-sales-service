@@ -40,30 +40,30 @@ python -m smtpd -n -c DebuggingServer localhost:1025
 You need to be registered and logged into the system to get an API token.
 I use Djoser. 
 Use <br>
-site_root/rest_api/auth/users/ to create yourself a user, and standard routes: <br>
-site_root/rest_api/auth/token/login/ <br>
+site_root/api/auth/users/ to create yourself a user, and standard routes: <br>
+site_root/api/auth/token/login/ <br>
 and <br>
 site_root/rest_api/auth/token/logout/ <br>
 to log in and out of system.
 
 All models except SiteSetting are represented with all necessary CRUD operations that DRF provides:
 
-1. site_root/rest_api/voyages/
-2. site_root/rest_api/s_in_voyages/
-3. site_root/rest_api/stations/
-4. site_root/rest_api/cities/
-5. site_root/rest_api/countries/
-6. site_root/rest_api/trains/
-7. site_root/rest_api/purchased_tickets/
+1. site_root/api/voyages/
+2. site_root/api/s_in_voyages/
+3. site_root/api/stations/
+4. site_root/api/cities/
+5. site_root/api/countries/
+6. site_root/api/trains/
+7. site_root/api/purchased_tickets/
 
 
 Apart from that, there are two custom routes: 
 
-1. [GET] site_root/rest_api/voyages/search/<departure_station_id>/<arrival_station_id>/<departure_date (YYYY-MM-DD)>/
-2. [POST] site_root/rest_api/purchased_tickets/purchase/
+1. [GET] site_root/api/voyages/search/<departure_station_id>/<arrival_station_id>/<departure_date (YYYY-MM-DD)>/
+2. [POST] site_root/api/purchased_tickets/purchase/
 You need to pass following parameters (examples): 
 voyage_pk (3), departure_en_route_id (15), arrival_en_route_id (18), seat_numbers (125,126,127), customers_timezone (Europe/Moscow), customers_region_code (RU), customers_phone_number (9037930202), customers_email (example@mail.com).
 
 You can also filter PurchasedTickets by customers_phone_number field with a request like this:
-site_root/rest_api/purchased_tickets?customers_phonenumber=9037930202
+site_root/api/purchased_tickets?customers_phonenumber=9037930202
 
