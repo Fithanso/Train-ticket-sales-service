@@ -6,7 +6,7 @@ from site_api.views import *
 import os.path
 import ast
 
-from Train_ticket_sales_service.settings import local_fithanso as settings
+from Train_ticket_sales_service.settings import general as settings
 
 
 #  python manage.py test site_api.tests --settings=Train_ticket_sales_service.settings.local_fithanso --keepdb
