@@ -9,7 +9,7 @@ from tickets.models import PurchasedTicket
 
 from train_main_app.models import Voyage
 
-from Train_ticket_sales_service.settings import local_fithanso as settings
+from Train_ticket_sales_service.settings import general as settings
 
 
 class TestPurchase(TestCase):

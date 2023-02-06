@@ -5,7 +5,7 @@ from tickets.models import PurchasedTicket
 from train_main_app.models import Country
 
 
-#  python manage.py test tickets.tests --settings=Train_ticket_sales_service.settings.local_fithanso --keepdb
+#  python manage.py test tickets.tests --settings=Train_ticket_sales_service.settings.general --keepdb
 
 
 class TestSearch(TestCase):

@@ -9,7 +9,7 @@ from django.contrib.staticfiles import finders
 from train_main_app.functions import *
 from train_main_app.models import Voyage
 
-from Train_ticket_sales_service.settings import local_fithanso as settings
+from Train_ticket_sales_service.settings import general as settings
 
 
 def get_customers_phonenumber(ticket):

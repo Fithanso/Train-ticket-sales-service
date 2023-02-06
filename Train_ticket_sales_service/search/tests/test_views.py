@@ -7,7 +7,7 @@ from django.urls import reverse
 from train_main_app.models import Voyage, Station, StationInVoyage, Train
 
 
-#  python manage.py test search.tests --settings=Train_ticket_sales_service.settings.local_fithanso --keepdb
+#  python manage.py test search.tests --settings=Train_ticket_sales_service.settings.general --keepdb
 
 
 class TestList(TestCase):
