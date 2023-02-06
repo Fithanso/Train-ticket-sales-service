@@ -1,2 +1,1 @@
-from .local_fithanso import *
-
+from . import local_fithanso
