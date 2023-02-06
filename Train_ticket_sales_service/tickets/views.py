@@ -5,7 +5,7 @@ from django.http import FileResponse, Http404
 import phonenumbers as pn
 
 
-from Train_ticket_sales_service.settings import general as settings
+from Train_ticket_sales_service.settings import local_fithanso as settings
 
 from train_main_app.validators.params_validators import KeysExistValidator
 from train_main_app.mixins import InvalidParametersRedirectMixin
