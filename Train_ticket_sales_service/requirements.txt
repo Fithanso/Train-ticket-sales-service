@@ -116,7 +116,7 @@ social-auth-app-django==4.0.0
 social-auth-core==4.3.0
 sortedcontainers==2.4.0
 sqlparse==0.4.2
-timezonefinder==6.1.1
+timezonefinder==6.1.4
 tinycss2==1.2.1
 toml==0.10.2
 tomli==2.0.1
